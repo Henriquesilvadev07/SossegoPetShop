@@ -32,10 +32,12 @@ public class AgendamentoService {
         agenda.setServico(dto.servico());
         agenda.setValor(dto.valor());
         agenda.setDataHora(dto.dataHora());
+        agenda.setDescricao(dto.descricao());
+        agenda.setFormaPagamento(dto.formaPagamento());
+        agenda.setBuscarEntregar(dto.buscarEntregar());
 
         return agendamentoRepository.save(agenda);
     }
-
     public String finalizarESubirLink(Long id) {
         AgendamentoModel agenda = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Agendamento nao encontrado"));

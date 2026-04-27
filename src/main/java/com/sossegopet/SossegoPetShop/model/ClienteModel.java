@@ -24,8 +24,11 @@ public class ClienteModel {
     private String nome;
 
     @NotBlank(message = "o telefone é obrigatório")
+    @Column(unique = true)
     private String telefone;
 
+    @NotBlank
     private String endereco;
+
 
 }

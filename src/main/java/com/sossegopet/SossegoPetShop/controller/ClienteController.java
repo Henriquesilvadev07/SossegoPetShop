@@ -2,6 +2,7 @@ package com.sossegopet.SossegoPetShop.controller;
 
 
 import com.sossegopet.SossegoPetShop.model.ClienteModel;
+import com.sossegopet.SossegoPetShop.repository.ClienteRepository;
 import com.sossegopet.SossegoPetShop.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     @PostMapping
     public ResponseEntity<ClienteModel> salvarCliente(@RequestBody ClienteModel cliente){
         ClienteModel salvo = new ClienteModel();
@@ -26,6 +30,14 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<List<ClienteModel>> listar(){
         return ResponseEntity.ok(clienteService.listarClientes());
+    }
+
+    @GetMapping("/buscar-por-telefone/{telefone}")
+    public ResponseEntity<ClienteModel> buscarFichaCompleta(@PathVariable String telefone) {
+        ClienteModel cliente = clienteRepository.findByTelefone(telefone)
+                .orElseThrow(() -> new RuntimeException("Cliente nao encontrado"));
+
+        return ResponseEntity.ok(cliente);
     }
 
     @GetMapping("/{id}")

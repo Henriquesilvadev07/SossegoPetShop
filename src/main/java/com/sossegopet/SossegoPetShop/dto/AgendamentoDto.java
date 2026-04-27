@@ -12,5 +12,7 @@ public record AgendamentoDto(
         @NotBlank String servico,
         @Positive BigDecimal valor,
         boolean buscarEntregar,
-        @NotNull Long petId
+        @NotNull Long petId,
+        String descricao,
+        @NotBlank String formaPagamento
         ) {}

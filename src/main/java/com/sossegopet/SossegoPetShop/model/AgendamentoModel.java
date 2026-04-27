@@ -39,5 +39,10 @@ public class AgendamentoModel {
     @JoinColumn(name = "pet_id")
     private AnimalModel pet;
 
+    private String descricao;
+
+    @NotBlank
+    private String formaPagamento;
+
 
 }

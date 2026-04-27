@@ -2,257 +2,353 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Sossego PetShop | Gestão Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Sossego Pet | Gestão Total</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #eff3f6; /* Fundo claro mas não ofuscante */
+            --bg: #e5e0d8;
             --card: #ffffff;
-            --text: #1d1d1f;
-            --azul: #0071e3;
-            --verde-agua: #52b788;
-            --sucesso: #34c759;
-            --border: #d2d2d7;
+            --sidebar: #cfc8bc;
+            --brand: #000000;
+            --accent: #4a3219;
+            --border: #a39d91;
+            --success: #0e5a29;
+            --info: #0044cc;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0; padding: 30px 20px;
-            font-size: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg); color: #000;
+            margin: 0; display: flex; height: 100vh; overflow: hidden;
         }
 
-        #notification {
-            position: fixed; top: 20px; right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px); border: 1px solid var(--border);
-            padding: 16px 24px; border-radius: 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            display: none; z-index: 10000; font-weight: 500;
+        nav {
+            width: 110px; background: var(--sidebar); border-right: 3px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; padding-top: 40px;
         }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; margin-bottom: 45px;
+            cursor: pointer; opacity: 0.8; transition: 0.2s; color: var(--brand);
+        }
+        .nav-item.active { opacity: 1; font-weight: 900; transform: scale(1.1); }
+        .nav-item i { font-size: 32px; margin-bottom: 5px; font-style: normal; }
+        .nav-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 800; }
 
-        .container { max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: 480px 1fr; gap: 24px; }
+        main { flex: 1; padding: 40px 60px; overflow-y: auto; }
+        .page { display: none; max-width: 1000px; margin: 0 auto; animation: fadeIn 0.2s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         section {
-            background: var(--card); border-radius: 24px;
-            padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-            margin-bottom: 24px; border: 1px solid rgba(0,0,0,0.02);
+            background: var(--card); padding: 50px; border-radius: 12px;
+            border: 3px solid var(--brand); box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
         }
 
-        h2 { font-size: 1.3rem; font-weight: 700; margin-top: 0; margin-bottom: 20px; color: var(--azul); }
+        h1 { font-weight: 900; font-size: 2.8rem; margin-bottom: 40px; letter-spacing: -2px; }
+        h2 { font-size: 1.3rem; text-transform: uppercase; border-bottom: 5px solid var(--bg); padding-bottom: 10px; margin-bottom: 30px; font-weight: 900; }
 
-        label { display: block; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; color: #6e6e73; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .input-group { margin-bottom: 25px; }
 
-        input, select {
-            width: 100%; background: #fbfbfd; border: 1.5px solid #d2d2d7; padding: 12px;
-            border-radius: 12px; color: var(--text); font-size: 1rem; margin-bottom: 15px; box-sizing: border-box;
-        }
-        input:focus, select:focus { outline: none; border-color: var(--verde-agua); background: #fff; }
-
-        button {
-            width: 100%; padding: 15px; border-radius: 14px; border: none;
-            font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+        label {
+            display: block; font-size: 1rem; font-weight: 900; color: var(--accent);
+            text-transform: uppercase; margin-bottom: 10px;
         }
 
-        .btn-main { background: var(--azul); color: white; }
-        .btn-main:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,113,227,0.3); }
-
-        .btn-action {
-            background: #f5f5f7; color: var(--azul); width: auto;
-            padding: 8px 16px; font-size: 0.85rem; border-radius: 10px; border: 1px solid #d2d2d7;
+        input, select, textarea {
+            width: 100%; padding: 20px; background: #fff; border: 3px solid var(--brand);
+            border-radius: 8px; font-size: 1.3rem; box-sizing: border-box; font-family: inherit;
+            color: #000; font-weight: 700;
         }
 
-        .btn-zap { background: var(--verde-agua); color: white; width: auto; padding: 10px 20px; border-radius: 12px; }
-        .btn-zap:hover { background: #40916c; }
+        .checkbox-container {
+            display: flex; align-items: center; gap: 15px;
+            background: #f9f9f9; padding: 20px; border: 3px dashed var(--brand);
+            border-radius: 8px; cursor: pointer;
+        }
+        .checkbox-container input { width: 35px; height: 35px; cursor: pointer; }
+
+        .btn-main {
+            background: var(--brand); color: white; border: none; padding: 25px;
+            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%;
+            text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem; margin-top: 10px;
+        }
+
+        #fichaCliente { background: #fffdeb; border: 4px solid var(--brand); padding: 30px; border-radius: 8px; margin-bottom: 30px; display: none; }
+        .data-value { font-size: 2rem; font-weight: 900; color: var(--brand); }
 
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 0.75rem; color: #86868b; text-transform: uppercase; padding-bottom: 12px; border-bottom: 1px solid #eee; }
-        td { padding: 16px 0; border-bottom: 1px solid #f5f5f7; vertical-align: middle; }
+        th { text-align: left; padding: 20px; color: #000; text-transform: uppercase; font-weight: 900; border-bottom: 4px solid var(--brand); }
+        td { padding: 30px 20px; border-bottom: 2px solid var(--border); background: #fff; vertical-align: top; }
 
-        .scroll-area { max-height: 400px; overflow-y: auto; }
-        .badge-servico { background: #e8f4ff; color: var(--azul); padding: 5px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; }
+        .row-main { font-size: 1.6rem; font-weight: 900; color: #000; }
+        .row-sub { font-size: 1.2rem; color: #333; font-weight: 700; margin-top: 5px; }
 
-        .data-time { display: block; font-size: 0.85rem; color: #ff9f0a; font-weight: 600; margin-top: 4px; }
-        small { color: #86868b; display: block; margin-top: 2px; }
+        /* AJUSTE NA CAIXA DE OBSERVAÇÕES */
+        .obs-box {
+            background: #f9f9f9; /* Fundo cinza bem clarinho e neutro */
+            padding: 18px;
+            border: 2px solid var(--border); /* Borda fina e suave */
+            border-radius: 10px; /* Bordas arredondadas */
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            font-weight: 600;
+            text-align: left; /* Texto alinhado à esquerda (normal) */
+            line-height: 1.5; /* Espaçamento entre linhas confortável */
+            display: inline-block; /* Faz o retângulo ajustar ao tamanho do texto */
+            max-width: 100%; /* Garante que não ultrapasse a célula se for muito longo */
+        }
+        .badge-transport { background: #ff0000; color: #fff; padding: 5px 15px; border-radius: 4px; font-size: 1rem; font-weight: 900; display: inline-block; margin-top: 10px; }
+
+        #notification {
+            position: fixed; top: 20px; right: 20px; padding: 30px 60px; background: var(--brand);
+            color: white; border-radius: 4px; display: none; z-index: 9999; font-weight: 900; font-size: 1.4rem; border: 4px solid white;
+        }
     </style>
 </head>
 <body>
 
 <div id="notification"></div>
 
-<header style="text-align: center; margin-bottom: 40px;">
-    <h1 style="font-weight: 800; font-size: 2.4rem; color: var(--azul); letter-spacing: -1px;">
-        Sossego <span style="color: var(--verde-agua);">PetShop</span>
-    </h1>
-</header>
+<nav>
+    <div class="nav-item active" onclick="showPage('cadastro', this)"><i>👤</i><span>Novo</span></div>
+    <div class="nav-item" onclick="showPage('agendamento', this)"><i>📅</i><span>Agenda</span></div>
+    <div class="nav-item" onclick="showPage('lista', this)"><i>📋</i><span>Fila</span></div>
+</nav>
 
-<div class="container">
-
-    <div class="col-left">
-        <section>
-            <h2>✨ Entrada Rápida</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <div><label>Dono</label><input type="text" id="cliNome" placeholder="Ex: Lucas"></div>
-                <div><label>WhatsApp</label><input type="text" id="cliTel" placeholder="119..."></div>
+<main>
+    <div id="cadastro" class="page active">
+        <h1>Sossego <b>Pet</b></h1>
+        <section id="sectionDono">
+            <h2>1. Dados do Proprietário</h2>
+            <div class="grid">
+                <div class="input-group"><label>Nome</label><input type="text" id="cliNome"></div>
+                <div class="input-group"><label>WhatsApp</label><input type="text" id="cliTel"></div>
             </div>
-            <label>Endereço</label><input type="text" id="cliEnd" placeholder="Rua, número e bairro">
-            <div style="border-top: 1px solid #eee; margin: 5px 0 15px 0;"></div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <div><label>Pet</label><input type="text" id="aniNome" placeholder="Ex: Totó"></div>
-                <div><label>Raça</label><input type="text" id="aniRaca" placeholder="Ex: Shih Tzu"></div>
-            </div>
-            <button class="btn-main" onclick="fluxoUnificado()">Salvar Cliente e Pet</button>
+            <div class="input-group"><label>Endereço Completo</label><input type="text" id="cliEnd"></div>
+            <button class="btn-main" onclick="cadastrarDono()">Próximo: Adicionar Pets 🐾</button>
         </section>
 
-        <section>
-            <h2>👥 Clientes Cadastrados</h2>
-            <div class="scroll-area">
-                <table id="tabelaClientes">
-                    <thead><tr><th>Dono / Endereço</th><th style="text-align:right">Ação</th></tr></thead>
-                    <tbody></tbody>
-                </table>
+        <section id="sectionPet" style="display:none; margin-top: 30px;">
+            <h2 style="color: var(--success);">2. Cadastrar Animal para <span id="spanDonoNome"></span></h2>
+            <div class="grid">
+                <div class="input-group"><label>Nome do Pet</label><input type="text" id="aniNome"></div>
+                <div class="input-group"><label>Raça</label><input type="text" id="aniRaca"></div>
+            </div>
+            <div class="grid">
+                <button class="btn-main" style="background: var(--success);" onclick="cadastrarPet(false)">Concluir ✅</button>
+                <button class="btn-main" style="background: var(--info);" onclick="cadastrarPet(true)">Salvar e + Outro Pet</button>
             </div>
         </section>
     </div>
 
-    <div class="col-right">
-        <section id="areaAgendamento">
-            <h2>📅 Novo Agendamento</h2>
-            <div style="display: grid; grid-template-columns: 2fr 1.5fr 1fr 1.5fr; gap: 12px;">
-                <div>
-                    <label>Pet (Dono)</label>
-                    <select id="selectPet"><option>Carregando...</option></select>
-                </div>
-                <div>
-                    <label>Serviço</label>
-                    <select id="ageServico">
-                        <option value="Banho">🛁 Banho</option>
-                        <option value="Tosa">✂️ Tosa</option>
-                        <option value="Banho & Tosa">🚿 Banho & Tosa</option>
-                        <option value="Tosa Higiênica">☁️ Tosa Higiênica</option>
-                    </select>
-                </div>
-                <div><label>Valor</label><input type="number" id="ageValor" placeholder="0,00"></div>
-                <div><label>Data/Hora</label><input type="datetime-local" id="ageData"></div>
-            </div>
-            <button class="btn-main" style="background: var(--verde-agua);" onclick="agendar()">Confirmar Agendamento</button>
-        </section>
-
+    <div id="agendamento" class="page">
+        <h1>Novo <b>Agendamento</b></h1>
         <section>
-            <h2>📋 Fila de Atendimento (Cronológica)</h2>
+            <h2>Passo 1: Quem é o cliente?</h2>
+            <div style="display:flex; gap:15px; margin-bottom:40px">
+                <input type="text" id="buscaTel" placeholder="Número do WhatsApp...">
+                <button class="btn-main" style="width:280px; margin-top:0" onclick="buscarFicha()">Buscar 🔍</button>
+            </div>
+
+            <div id="fichaCliente">
+                <label>Tutor(a):</label>
+                <div id="resDono" class="data-value"></div>
+                <div style="margin-top:25px">
+                    <label>Selecione o Pet:</label>
+                    <select id="selectPet"></select>
+                </div>
+            </div>
+
+            <div id="areaServico" style="display:none">
+                <h2>Passo 2: Serviço e Transporte</h2>
+                <div class="grid">
+                    <div class="input-group"><label>Serviço</label><select id="ageServico"><option>Banho</option><option>Tosa</option><option>Banho & Tosa</option><option>Tosa Higiênica</option></select></div>
+                    <div class="input-group">
+                        <label>Pagamento</label>
+                        <select id="agePagamento">
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão Débito">Cartão Débito</option>
+                            <option value="Cartão Crédito">Cartão Crédito</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="input-group"><label>Valor R$</label><input type="number" id="ageValor" step="0.01"></div>
+                    <div class="input-group"><label>Data / Hora</label><input type="datetime-local" id="ageData"></div>
+                </div>
+
+                <div class="input-group" style="margin-top:10px">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="ageTaxa">
+                        <span class="checkbox-label">PRECISA BUSCAR E ENTREGAR O PET? 🚚</span>
+                    </label>
+                </div>
+
+                <div class="input-group">
+                    <label>Anotações Importantes</label>
+                    <textarea id="ageDesc" rows="3"></textarea>
+                </div>
+                <button class="btn-main" onclick="confirmarAgenda()">Confirmar Horário 🎋</button>
+            </div>
+        </section>
+    </div>
+
+    <div id="lista" class="page">
+        <h1>Fila de <b>Trabalho</b></h1>
+        <section>
             <table id="tabelaFila">
-                <thead><tr><th>Pet (Dono)</th><th>Serviço / Horário</th><th style="text-align:right">Ação</th></tr></thead>
+                <thead>
+                <tr>
+                    <th width="35%">Dono / Endereço</th>
+                    <th width="50%">Pet / Serviço / Notas</th>
+                    <th width="15%">Ações</th>
+                </tr>
+                </thead>
                 <tbody></tbody>
             </table>
         </section>
     </div>
-</div>
+</main>
 
 <script>
     const API = "http://localhost:8080";
-    let listaAnimaisCache = [];
+    let clienteAtualId = null;
 
-    window.onload = () => carregarTudo();
+    function showPage(id, el) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+        if(id === 'lista') carregarFila();
+    }
 
     function notify(msg) {
-        const el = document.getElementById('notification');
-        el.innerText = msg; el.style.display = 'block';
-        setTimeout(() => el.style.display = 'none', 3000);
+        const n = document.getElementById('notification');
+        n.innerText = msg; n.style.display = 'block';
+        setTimeout(() => n.style.display = 'none', 3000);
     }
 
-    async function carregarTudo() {
-        await carregarClientes();
-        await carregarPetsSelect();
-        listarAgendamentos();
-    }
-
-    async function fluxoUnificado() {
-        const dono = { nome: document.getElementById('cliNome').value, telefone: document.getElementById('cliTel').value, endereco: document.getElementById('cliEnd').value };
-        try {
-            const resD = await fetch(`${API}/clientes`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dono) });
-            const dSalvo = await resD.json();
-            const pet = { nome: document.getElementById('aniNome').value, raca: document.getElementById('aniRaca').value, clienteId: dSalvo.id };
-            await fetch(`${API}/animais`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(pet) });
-            notify("✅ Tudo pronto! Cliente e Pet salvos.");
-            limparCampos(); carregarTudo();
-        } catch (e) { notify("❌ Erro ao salvar."); }
-    }
-
-    async function carregarClientes() {
-        const res = await fetch(`${API}/clientes`);
-        const dados = await res.json();
-        const body = document.querySelector('#tabelaClientes tbody');
-        body.innerHTML = "";
-        dados.reverse().forEach(c => {
-            body.innerHTML += `<tr>
-                <td><strong>${c.nome}</strong><small>${c.endereco || 'Endereço não informado'}</small></td>
-                <td style="text-align:right"><button class="btn-action" onclick="preencherAgendamento(${c.id})">Agendar</button></td>
-            </tr>`;
-        });
-    }
-
-    async function carregarPetsSelect() {
-        const res = await fetch(`${API}/animais`);
-        listaAnimaisCache = await res.json();
-        const s = document.getElementById('selectPet');
-        s.innerHTML = '<option value="">Selecione...</option>';
-        listaAnimaisCache.forEach(p => s.innerHTML += `<option value="${p.id}">${p.nome} (${p.dono.nome})</option>`);
-    }
-
-    function preencherAgendamento(donoId) {
-        const pet = listaAnimaisCache.find(p => p.dono.id === donoId);
-        if(pet) {
-            document.getElementById('selectPet').value = pet.id;
-            document.getElementById('ageValor').focus();
-            notify(`📍 Selecionado: ${pet.nome}`);
-            document.getElementById('areaAgendamento').scrollIntoView({ behavior: 'smooth' });
-        } else { notify("⚠️ Este cliente não tem pets vinculados."); }
-    }
-
-    async function agendar() {
-        const dados = {
-            petId: parseInt(document.getElementById('selectPet').value),
-            servico: document.getElementById('ageServico').value,
-            valor: parseFloat(document.getElementById('ageValor').value),
-            dataHora: document.getElementById('ageData').value,
-            buscarEntregar: false
+    async function cadastrarDono() {
+        const cliente = {
+            nome: document.getElementById('cliNome').value,
+            telefone: document.getElementById('cliTel').value,
+            endereco: document.getElementById('cliEnd').value,
+            formaPagamento: "Definido no Agendamento"
         };
-        if(!dados.petId || !dados.dataHora) return notify("❌ Informe o Pet e a Data!");
-        await fetch(`${API}/agendamentos`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados) });
-        notify("📅 Agendado na fila!"); listarAgendamentos();
+        const res = await fetch(`${API}/clientes`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(cliente)
+        });
+        if(res.ok) {
+            const salvo = await res.json();
+            clienteAtualId = salvo.id;
+            document.getElementById('spanDonoNome').innerText = salvo.nome;
+            document.getElementById('sectionDono').style.opacity = '0.3';
+            document.getElementById('sectionPet').style.display = 'block';
+            notify("✅ Dono cadastrado!");
+        }
     }
 
-    async function listarAgendamentos() {
+    async function cadastrarPet(adicionarOutro) {
+        const animal = {
+            nome: document.getElementById('aniNome').value,
+            raca: document.getElementById('aniRaca').value,
+            clienteId: clienteAtualId
+        };
+        await fetch(`${API}/animais`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(animal)
+        });
+        notify("🐾 Pet adicionado!");
+        document.getElementById('aniNome').value = "";
+        document.getElementById('aniRaca').value = "";
+        if(!adicionarOutro) location.reload();
+    }
+
+    async function buscarFicha() {
+        const tel = document.getElementById('buscaTel').value;
+        const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
+        if(!res.ok) return notify("❌ Não encontramos esse número.");
+        const cliente = await res.json();
+        document.getElementById('resDono').innerText = cliente.nome;
+
+        const resP = await fetch(`${API}/animais`);
+        const todos = await resP.json();
+        const seusPets = todos.filter(p => p.dono.id === cliente.id);
+        const select = document.getElementById('selectPet');
+        select.innerHTML = "";
+        seusPets.forEach(p => select.innerHTML += `<option value="${p.id}">${p.nome.toUpperCase()} (${p.raca})</option>`);
+
+        document.getElementById('fichaCliente').style.display = 'block';
+        document.getElementById('areaServico').style.display = 'block';
+    }
+
+    async function confirmarAgenda() {
+        const dto = {
+            petId: document.getElementById('selectPet').value,
+            servico: document.getElementById('ageServico').value,
+            valor: document.getElementById('ageValor').value,
+            dataHora: document.getElementById('ageData').value,
+            buscarEntregar: document.getElementById('ageTaxa').checked,
+            formaPagamento: document.getElementById('agePagamento').value,
+            descricao: document.getElementById('ageDesc').value
+        };
+
+        const res = await fetch(`${API}/agendamentos`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(dto)
+        });
+
+        if(res.ok) {
+            notify("📅 Horário Reservado!");
+            showPage('lista', document.querySelectorAll('.nav-item')[2]);
+        } else {
+            const erro = await res.json();
+            notify("❌ Erro ao agendar: " + (erro.message || "Verifique os campos"));
+        }
+    }
+
+    async function carregarFila() {
         const res = await fetch(`${API}/agendamentos`);
         const dados = await res.json();
-
-        // ORDENAÇÃO: Mais próximo (agora) para o mais longe (futuro)
-        dados.sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora));
-
         const body = document.querySelector('#tabelaFila tbody');
         body.innerHTML = "";
-        dados.forEach(i => {
-            const dataFormatada = new Date(i.dataHora).toLocaleString('pt-BR', {
-                day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
-            });
-
-            body.innerHTML += `<tr>
-                <td><strong>${i.pet.nome}</strong> <small>(${i.pet.dono.nome})</small></td>
-                <td><span class="badge-servico">${i.servico}</span><span class="data-time">🕒 ${dataFormatada}</span></td>
-                <td style="text-align:right"><button class="btn-zap" onclick="finalizar(${i.id})">Finalizar</button></td>
-            </tr>`;
+        dados.sort((a,b) => new Date(a.dataHora) - new Date(b.dataHora)).forEach(a => {
+            const data = new Date(a.dataHora).toLocaleString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+            body.innerHTML += `
+                <tr>
+                    <td>
+                        <div class="row-main">${a.pet.dono.nome}</div>
+                        <div class="row-sub">📍 ${a.pet.dono.endereco}</div>
+                    </td>
+                    <td>
+                        <div class="row-main" style="color:var(--accent)">${a.pet.nome.toUpperCase()} <span style="color:#000; font-size:1.1rem; margin-left:15px">⏰ ${data}</span></div>
+                        <div class="row-sub"><strong>${a.servico}</strong> | <span style="color:var(--success)">R$ ${a.valor}</span></div>
+                        <div style="font-weight: 800; color: var(--accent); margin-top:5px">PAGAMENTO: ${a.formaPagamento}</div>
+                        ${a.buscarEntregar ? '<div class="badge-transport">🚚 PRECISA BUSCAR/ENTREGAR</div>' : ''}
+                        ${a.descricao ? `<div class="obs-box">${a.descricao}</div>` : ''}
+                    </td>
+                    <td>
+                        <button class="btn-main" style="padding:15px; font-size:0.9rem; background:var(--success); margin-top:0" onclick="finalizar(${a.id})">TERMINOU ✅</button>
+                    </td>
+                </tr>
+            `;
         });
     }
 
     async function finalizar(id) {
         const res = await fetch(`${API}/agendamentos/${id}`, { method: 'DELETE' });
         const link = await res.text();
-        window.location.href = link.replace("https://wa.me/", "whatsapp://send?phone=");
-        listarAgendamentos();
+        window.location.href = link;
+        carregarFila();
     }
-
-    function limparCampos() { document.querySelectorAll('input').forEach(i => i.value = ""); }
 </script>
 </body>
 </html>
