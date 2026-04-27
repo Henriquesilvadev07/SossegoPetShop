@@ -42,11 +42,11 @@ public class AgendamentoService {
 
         String telefone = agenda.getPet().getDono().getTelefone();
         String nomePet = agenda.getPet().getNome();
-        String mensagem = "Oi! O " +nomePet+ "já terminou o(a) " +agenda.getServico()+ " e está prontinho! \uD83D\uDC3E";
+        String mensagem = "Oi! O " +nomePet+ " já terminou o(a) " +agenda.getServico()+ " e está prontinho! \uD83D\uDC3E";
         String textoEncoded = URLEncoder.encode(mensagem, StandardCharsets.UTF_8);
         agendamentoRepository.deleteById(id);
 
-        return "https://api.whatsapp.com/send?phone=55" +telefone+ "&text=" +textoEncoded;
+        return "whatsapp://send?phone=55" +telefone+ "&text=" +textoEncoded;
     }
 
     public List<AgendamentoModel> listarTodos() {

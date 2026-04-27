@@ -29,13 +29,10 @@ public class ClienteService {
     public ClienteModel atualizarPorId(Long id, ClienteModel cliente) {
         ClienteModel clienteExistente = acharPorId(id);
 
-        clienteExistente.setNome(clienteExistente.getNome());
-        clienteExistente.setTelefone(clienteExistente.getTelefone());
-        clienteExistente.setEndereco(clienteExistente.getEndereco());
+        clienteExistente.setNome(cliente.getNome());
+        clienteExistente.setTelefone(cliente.getTelefone());
+        clienteExistente.setEndereco(cliente.getEndereco());
 
         return clienteRepository.save(clienteExistente);
     }
-
-
-
 }
