@@ -11,5 +11,6 @@ public record AgendamentoDto(
         @NotNull LocalDateTime dataHora,
         @NotBlank String servico,
         @Positive BigDecimal valor,
+        boolean buscarEntregar,
         @NotNull Long petId
         ) {}

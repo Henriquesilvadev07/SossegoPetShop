@@ -26,4 +26,6 @@ public class ClienteModel {
     @NotBlank(message = "o telefone é obrigatório")
     private String telefone;
 
+    private String endereco;
+
 }
