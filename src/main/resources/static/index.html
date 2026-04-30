@@ -190,6 +190,11 @@
                         <span class="checkbox-label" style="font-weight: 900;">PRECISA BUSCAR E ENTREGAR O PET? 🚚</span>
                     </label>
                 </div>
+                <!-- CAMPO DE DESCRIÇÃO ADICIONADO ABAIXO -->
+                <div class="input-group" style="margin-top:20px">
+                    <label>Anotações / Descrição do Serviço</label>
+                    <textarea id="ageDescricao" rows="3" placeholder="Ex: Alérgico a shampoo, tosa baixa..."></textarea>
+                </div>
                 <button class="btn-main" onclick="confirmarAgenda()">Confirmar Horário 🎋</button>
             </div>
         </section>
@@ -242,7 +247,7 @@
         setTimeout(() => n.style.display = 'none', 3000);
     }
 
-    // --- FILA ---
+    // --- FILA (DESCRIÇÃO ADICIONADA NA RENDERIZAÇÃO) ---
     async function carregarFila() {
         const res = await fetch(`${API}/agendamentos`);
         const dados = await res.json();
@@ -251,11 +256,15 @@
         dados.forEach(a => {
             const dataFmt = new Date(a.dataHora).toLocaleString('pt-BR', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit'});
             const entrega = a.buscarEntregar ? '<span class="badge" style="background:#d35400; margin-top:5px">🚚 BUSCAR/ENTREGAR</span>' : '';
+
+            // Lógica para exibir descrição se houver
+            const descHtml = a.descricao ? `<div style="font-size: 0.9rem; color: #666; font-style: italic; margin-top: 5px; border-left: 2px solid var(--brand); padding-left: 8px;">"${a.descricao}"</div>` : '';
+
             body.innerHTML += `
                 <tr>
                     <td><div class="row-main">${a.pet.dono.nome}</div><div class="row-sub">📍 ${a.pet.dono.endereco}</div></td>
                     <td><div class="row-main">${a.pet.nome.toUpperCase()}</div><div class="row-sub">${a.pet.raca}</div></td>
-                    <td><div class="row-main">${a.servico}</div><div class="row-sub">💰 ${a.formaPagamento}</div>${entrega}</td>
+                    <td><div class="row-main">${a.servico}</div><div class="row-sub">💰 ${a.formaPagamento}</div>${entrega}${descHtml}</td>
                     <td><div class="row-main">R$ ${a.valor.toFixed(2)}</div><div class="row-time">${dataFmt}</div></td>
                     <td><button id="btn-finalizar-${a.id}" class="btn-main" style="padding:15px; font-size:0.85rem; background:var(--success); margin-top:0" onclick="finalizar(${a.id})">FINALIZAR</button></td>
                 </tr>`;
@@ -284,7 +293,7 @@
         }
 
         const c = await res.json();
-        notify(`✅ Cliente ${c.nome} localizado!`); // Notificação adicionada aqui
+        notify(`✅ Cliente ${c.nome} localizado!`);
 
         const resP = await fetch(`${API}/animais`);
         const pets = (await resP.json()).filter(p => p.dono.id === c.id);
@@ -360,8 +369,17 @@
         document.getElementById('fichaCliente').style.display = 'block';
         document.getElementById('areaServico').style.display = 'block';
     }
+    // ENVIO DE DESCRIÇÃO ADICIONADO NO POST
     async function confirmarAgenda() {
-        const dto = { petId: document.getElementById('selectPet').value, servico: document.getElementById('ageServico').value, valor: document.getElementById('ageValor').value, dataHora: document.getElementById('ageData').value, formaPagamento: document.getElementById('agePagamento').value, buscarEntregar: document.getElementById('ageTaxa').checked };
+        const dto = {
+            petId: document.getElementById('selectPet').value,
+            servico: document.getElementById('ageServico').value,
+            valor: document.getElementById('ageValor').value,
+            dataHora: document.getElementById('ageData').value,
+            formaPagamento: document.getElementById('agePagamento').value,
+            buscarEntregar: document.getElementById('ageTaxa').checked,
+            descricao: document.getElementById('ageDescricao').value // <--- CAMPO ENVIADO
+        };
         await fetch(`${API}/agendamentos`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dto) });
         showPage('lista', document.querySelectorAll('.nav-item')[2]);
     }
