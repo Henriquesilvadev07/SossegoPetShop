@@ -20,3 +20,13 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/sossego_pet_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1234
+
+  frontend:
+    image: nginx:alpine
+    container_name: sossego-front
+    volumes:
+      - ./nginx:/usr/share/nginx/html
+    ports:
+      - "80:80"
+    depends_on:
+      - app
