@@ -1,32 +1,47 @@
 services:
   db:
-    image: postgres:15
-    container_name: postgres_db
+    image: postgres:latest
+    container_name: sossego-db
+    restart: always
     environment:
       POSTGRES_DB: sossego_pet_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - sossego-net
 
   app:
     build: .
-    container_name: sossego_app
-    ports:
-      - "8080:8080"
+    container_name: sossego-app
+    restart: always
     depends_on:
       - db
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/sossego_pet_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1234
+    ports:
+      - "8080:8080"
+    networks:
+      - sossego-net
 
   frontend:
     image: nginx:alpine
     container_name: sossego-front
-    volumes:
-      - ./nginx:/usr/share/nginx/html
+    restart: always
     ports:
       - "80:80"
+    volumes:
+      - ./nginx:/usr/share/nginx/html
     depends_on:
       - app
+    networks:
+      - sossego-net
+
+networks:
+  sossego-net:
+    driver: bridge

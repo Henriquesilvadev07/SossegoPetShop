@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class ClienteController {
 
     @Autowired
