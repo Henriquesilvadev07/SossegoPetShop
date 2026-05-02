@@ -11,7 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/agendamentos")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+
 public class AgendamentoController {
 
     @Autowired
