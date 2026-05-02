@@ -15,6 +15,7 @@
             --success: #0e5a29;
             --info: #0044cc;
             --warning: #f39c12;
+            --danger: #b91c1c;
         }
 
         body {
@@ -26,6 +27,7 @@
         nav {
             width: 110px; background: var(--sidebar); border-right: 3px solid var(--border);
             display: flex; flex-direction: column; align-items: center; padding-top: 40px;
+            flex-shrink: 0;
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; margin-bottom: 45px;
@@ -74,9 +76,11 @@
             background: var(--brand); color: white; border: none; padding: 25px;
             border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%;
             text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem; margin-top: 10px;
+            transition: opacity 0.2s;
         }
+        .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Tabelas e Listas */
+        /* Tabelas */
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; padding: 15px; color: #000; text-transform: uppercase; font-weight: 900; border-bottom: 4px solid var(--brand); font-size: 0.8rem; }
         td { padding: 20px 15px; border-bottom: 2px solid var(--border); background: #fff; vertical-align: middle; }
@@ -86,43 +90,103 @@
         .row-time { font-size: 1.4rem; font-weight: 900; color: #000; margin-top: 3px; }
         .badge { display: inline-block; padding: 5px 12px; background: var(--brand); color: #fff; border-radius: 4px; font-size: 0.85rem; font-weight: 900; }
 
-        /* Gestão de Clientes - Layout Ajustado */
+        /* Estado vazio */
+        .empty-state {
+            text-align: center; padding: 80px 20px; color: #888;
+        }
+        .empty-state .empty-icon { font-size: 4rem; margin-bottom: 15px; }
+        .empty-state p { font-size: 1.3rem; font-weight: 700; }
+
+        /* Clientes */
         .cliente-bar { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 3px solid var(--brand); border-radius: 8px; padding: 25px; margin-bottom: 15px; gap: 30px; }
-        .cliente-info { display: flex; gap: 40px; flex: 1; align-items: center; overflow: hidden; }
+        .cliente-info { display: flex; gap: 40px; flex: 1; align-items: center; overflow: hidden; flex-wrap: wrap; }
         .info-block { display: flex; flex-direction: column; }
         .info-label { font-size: 0.85rem; font-weight: 800; color: var(--border); text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; }
         .info-text { font-size: 1.4rem; font-weight: 800; white-space: nowrap; }
         .info-text.end { white-space: normal; line-height: 1.2; font-size: 1.2rem; color: var(--accent); }
 
-        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
-        .modal-content { background: var(--bg); padding: 40px; border-radius: 15px; width: 90%; max-width: 650px; border: 4px solid var(--brand); }
-
-        #notification {
-            position: fixed; top: 20px; right: 20px; padding: 30px 60px; background: var(--brand);
-            color: white; border-radius: 4px; display: none; z-index: 9999; font-weight: 900; font-size: 1.4rem; border: 4px solid white;
+        /* Contador de clientes */
+        .counter-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px; padding: 15px 20px;
+            background: #fff; border: 3px solid var(--brand); border-radius: 8px;
         }
+        .counter-bar span { font-weight: 900; font-size: 1rem; text-transform: uppercase; }
+        .counter-num { font-size: 1.5rem; font-weight: 900; color: var(--accent); }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
+        .modal-content {
+            background: var(--bg); padding: 40px; border-radius: 15px;
+            width: 90%; max-width: 750px; border: 4px solid var(--brand);
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        /* Modal de confirmação */
+        .modal-confirm .modal-content {
+            max-width: 480px; text-align: center;
+        }
+        .modal-confirm h2 { border: none; font-size: 1.5rem; margin-bottom: 10px; }
+        .modal-confirm p { font-size: 1.1rem; color: #555; font-weight: 600; margin-bottom: 30px; }
+
+        /* Card de pet no modal */
+        .pet-edit-card {
+            background: #fff; border: 3px solid var(--brand); border-radius: 10px;
+            padding: 25px; margin-bottom: 20px;
+        }
+        .pet-edit-card h3 {
+            font-size: 1rem; text-transform: uppercase; font-weight: 900;
+            color: var(--accent); margin: 0 0 20px 0;
+            border-bottom: 3px solid var(--bg); padding-bottom: 10px;
+        }
+
+        /* Notificação colorida */
+        #notification {
+            position: fixed; top: 20px; right: 20px; padding: 25px 50px;
+            border-radius: 4px; display: none; z-index: 99999; font-weight: 900;
+            font-size: 1.3rem; border: 4px solid white; transition: background 0.2s;
+        }
+        #notification.success { background: var(--success); }
+        #notification.error   { background: var(--danger); }
+        #notification.info    { background: var(--info); }
     </style>
 </head>
 <body>
 
 <div id="notification"></div>
 
+<!-- Modal confirmação finalizar -->
+<div id="modalConfirmar" class="modal modal-confirm">
+    <div class="modal-content">
+        <h2>Finalizar Atendimento?</h2>
+        <p>Isso vai remover o agendamento da fila.<br>Essa ação não pode ser desfeita.</p>
+        <div class="grid">
+            <button class="btn-main" id="btnConfirmarFinalizar" style="background: var(--success)" onclick="confirmarFinalizar()">Sim, Finalizar ✅</button>
+            <button class="btn-main" style="background: #666" onclick="fecharConfirmar()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edição -->
 <div id="modalEditar" class="modal">
     <div class="modal-content">
         <h1>Editar <b>Registro</b></h1>
         <input type="hidden" id="editClienteId">
-        <input type="hidden" id="editPetId">
-        <div class="grid">
-            <div class="input-group"><label>Dono</label><input type="text" id="editNome"></div>
-            <div class="input-group"><label>WhatsApp</label><input type="text" id="editTel"></div>
+
+        <div style="background:#fff; border: 3px solid var(--brand); border-radius:10px; padding:25px; margin-bottom:25px;">
+            <h2 style="margin-bottom:20px;">👤 Dados do Dono</h2>
+            <div class="grid">
+                <div class="input-group"><label>Nome</label><input type="text" id="editNome"></div>
+                <div class="input-group"><label>WhatsApp</label><input type="text" id="editTel"></div>
+            </div>
+            <div class="input-group"><label>Endereço</label><input type="text" id="editEnd"></div>
         </div>
-        <div class="grid">
-            <div class="input-group"><label>Pet</label><input type="text" id="editPetNome"></div>
-            <div class="input-group"><label>Raça</label><input type="text" id="editRaca"></div>
-        </div>
-        <div class="input-group"><label>Endereço</label><input type="text" id="editEnd"></div>
-        <div class="grid">
-            <button class="btn-main" style="background: var(--success)" onclick="salvarEdicao()">Atualizar ✅</button>
+
+        <h2 style="margin-bottom:15px;">🐾 Pets</h2>
+        <div id="editPetsContainer"></div>
+
+        <div class="grid" style="margin-top:10px;">
+            <button class="btn-main" id="btnSalvarEdicao" style="background: var(--success)" onclick="salvarEdicao()">Atualizar ✅</button>
             <button class="btn-main" style="background: #666" onclick="fecharModal()">Cancelar</button>
         </div>
     </div>
@@ -136,6 +200,7 @@
 </nav>
 
 <main>
+    <!-- CADASTRO -->
     <div id="cadastro" class="page active">
         <h1>Sossego <b>Pet</b></h1>
         <section id="sectionDono">
@@ -145,7 +210,7 @@
                 <div class="input-group"><label>WhatsApp</label><input type="text" id="cliTel"></div>
             </div>
             <div class="input-group"><label>Endereço Completo</label><input type="text" id="cliEnd"></div>
-            <button class="btn-main" onclick="cadastrarDono()">Próximo: Adicionar Pets 🐾</button>
+            <button class="btn-main" id="btnCadastrarDono" onclick="cadastrarDono()">Próximo: Adicionar Pets 🐾</button>
         </section>
         <section id="sectionPet" style="display:none; margin-top: 30px;">
             <h2 style="color: var(--success);">2. Cadastrar Animal para <span id="spanDonoNome"></span></h2>
@@ -160,12 +225,13 @@
         </section>
     </div>
 
+    <!-- AGENDAMENTO -->
     <div id="agendamento" class="page">
         <h1>Novo <b>Agendamento</b></h1>
         <section>
             <div style="display:flex; gap:15px; margin-bottom:40px">
                 <input type="text" id="buscaTel" placeholder="WhatsApp do cliente...">
-                <button class="btn-main" style="width:280px; margin-top:0" onclick="buscarFicha()">Buscar 🔍</button>
+                <button class="btn-main" id="btnBuscarFicha" style="width:280px; margin-top:0" onclick="buscarFicha()">Buscar 🔍</button>
             </div>
             <div id="fichaCliente" style="display:none; background: #fffdeb; border: 4px solid var(--brand); padding: 30px; border-radius: 8px; margin-bottom: 30px;">
                 <label>Tutor(a):</label>
@@ -187,42 +253,37 @@
                 <div class="input-group" style="margin-top:10px">
                     <label class="checkbox-container">
                         <input type="checkbox" id="ageTaxa">
-                        <span class="checkbox-label" style="font-weight: 900;">PRECISA BUSCAR E ENTREGAR O PET? 🚚</span>
+                        <span style="font-weight: 900;">PRECISA BUSCAR E ENTREGAR O PET? 🚚</span>
                     </label>
                 </div>
-                <!-- CAMPO DE DESCRIÇÃO ADICIONADO ABAIXO -->
                 <div class="input-group" style="margin-top:20px">
                     <label>Anotações / Descrição do Serviço</label>
                     <textarea id="ageDescricao" rows="3" placeholder="Ex: Alérgico a shampoo, tosa baixa..."></textarea>
                 </div>
-                <button class="btn-main" onclick="confirmarAgenda()">Confirmar Horário 🎋</button>
+                <button class="btn-main" id="btnConfirmarAgenda" onclick="confirmarAgenda()">Confirmar Horário 🎋</button>
             </div>
         </section>
     </div>
 
+    <!-- FILA -->
     <div id="lista" class="page">
         <h1>Fila de <b>Trabalho</b></h1>
         <section style="padding: 20px;">
-            <table id="tabelaFila">
-                <thead>
-                <tr>
-                    <th>Dono / Endereço</th>
-                    <th>Pet / Raça</th>
-                    <th>Serviço / Pagamento</th>
-                    <th>Valor / Hora</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div id="filaConteudo"></div>
         </section>
     </div>
 
+    <!-- CLIENTES -->
     <div id="clientes" class="page">
         <h1>Gestão de <b>Clientes</b></h1>
-        <div style="display:flex; gap:15px; margin-bottom:30px">
+        <div style="display:flex; gap:15px; margin-bottom:20px">
             <input type="text" id="buscaTelClientes" placeholder="Buscar por WhatsApp...">
-            <button class="btn-main" style="width:200px; margin-top:0" onclick="filtrarClientesPorTelefone()">BUSCAR</button>
+            <button class="btn-main" id="btnBuscarCliente" style="width:200px; margin-top:0" onclick="filtrarClientesPorTelefone()">BUSCAR</button>
+            <button class="btn-main" style="width:200px; margin-top:0; background:#555" onclick="carregarClientes()">VER TODOS</button>
+        </div>
+        <div id="counterBar" class="counter-bar" style="display:none">
+            <span>Total de clientes</span>
+            <span class="counter-num" id="counterNum">0</span>
         </div>
         <div id="listaClientes"></div>
     </div>
@@ -231,6 +292,7 @@
 <script>
     const API = "/api";
     let clienteAtualId = null;
+    let agendamentoParaFinalizar = null;
 
     function showPage(id, el) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -241,147 +303,252 @@
         if(id === 'clientes') carregarClientes();
     }
 
-    function notify(msg) {
+    function notify(msg, tipo = 'success') {
         const n = document.getElementById('notification');
-        n.innerText = msg; n.style.display = 'block';
+        n.className = tipo;
+        n.innerText = msg;
+        n.style.display = 'block';
         setTimeout(() => n.style.display = 'none', 3000);
     }
 
-    // --- FILA (DESCRIÇÃO ADICIONADA NA RENDERIZAÇÃO) ---
+    function setLoading(btnId, loading, textoOriginal) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.disabled = loading;
+        btn.innerText = loading ? '⏳ Aguarde...' : textoOriginal;
+    }
+
     async function carregarFila() {
-        const res = await fetch(`${API}/agendamentos`);
-        const dados = await res.json();
-        const body = document.querySelector('#tabelaFila tbody');
-        body.innerHTML = "";
-        dados.forEach(a => {
-            const dataFmt = new Date(a.dataHora).toLocaleString('pt-BR', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit'});
-            const entrega = a.buscarEntregar ? '<span class="badge" style="background:#d35400; margin-top:5px">🚚 BUSCAR/ENTREGAR</span>' : '';
+        const container = document.getElementById('filaConteudo');
+        container.innerHTML = `<div style="text-align:center; padding:40px; font-weight:700; color:#888;">⏳ Carregando fila...</div>`;
+        try {
+            const res = await fetch(`${API}/agendamentos`);
+            const dados = await res.json();
 
-            // Lógica para exibir descrição se houver
-            const descHtml = a.descricao ? `<div style="font-size: 0.9rem; color: #666; font-style: italic; margin-top: 5px; border-left: 2px solid var(--brand); padding-left: 8px;">"${a.descricao}"</div>` : '';
+            if (dados.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="empty-icon">🐾</div><p>Nenhum atendimento na fila agora.</p></div>`;
+                return;
+            }
 
-            body.innerHTML += `
-                <tr>
-                    <td><div class="row-main">${a.pet.dono.nome}</div><div class="row-sub">📍 ${a.pet.dono.endereco}</div></td>
-                    <td><div class="row-main">${a.pet.nome.toUpperCase()}</div><div class="row-sub">${a.pet.raca}</div></td>
-                    <td><div class="row-main">${a.servico}</div><div class="row-sub">💰 ${a.formaPagamento}</div>${entrega}${descHtml}</td>
-                    <td><div class="row-main">R$ ${a.valor.toFixed(2)}</div><div class="row-time">${dataFmt}</div></td>
-                    <td><button id="btn-finalizar-${a.id}" class="btn-main" style="padding:15px; font-size:0.85rem; background:var(--success); margin-top:0" onclick="finalizar(${a.id})">FINALIZAR</button></td>
-                </tr>`;
-        });
+            let tableHtml = `<table><thead><tr><th>Dono / Endereço</th><th>Pet / Raça</th><th>Serviço / Pagamento</th><th>Valor / Hora</th><th>Ações</th></tr></thead><tbody>`;
+
+            dados.forEach(a => {
+                const dataFmt = new Date(a.dataHora).toLocaleString('pt-BR', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit'});
+                const entrega = a.buscarEntregar ? '<span class="badge" style="background:#d35400; margin-top:5px">🚚 BUSCAR/ENTREGAR</span>' : '';
+                const descHtml = a.descricao ? `<div style="font-size: 0.9rem; color: #666; font-style: italic; margin-top: 5px; border-left: 2px solid var(--brand); padding-left: 8px;">"${a.descricao}"</div>` : '';
+                tableHtml += `
+                    <tr>
+                        <td><div class="row-main">${a.pet.dono.nome}</div><div class="row-sub">📍 ${a.pet.dono.endereco}</div></td>
+                        <td><div class="row-main">${a.pet.nome.toUpperCase()}</div><div class="row-sub">${a.pet.raca}</div></td>
+                        <td><div class="row-main">${a.servico}</div><div class="row-sub">💰 ${a.formaPagamento}</div>${entrega}${descHtml}</td>
+                        <td><div class="row-main">R$ ${a.valor.toFixed(2)}</div><div class="row-time">${dataFmt}</div></td>
+                        <td><button class="btn-main" style="padding:15px; font-size:0.85rem; background:var(--success); margin-top:0" onclick="pedirConfirmacaoFinalizar(${a.id})">FINALIZAR</button></td>
+                    </tr>`;
+            });
+
+            tableHtml += `</tbody></table>`;
+            container.innerHTML = tableHtml;
+        } catch (e) {
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:red;">Erro ao carregar fila.</div>`;
+        }
     }
 
-    async function finalizar(id) {
-        const res = await fetch(`${API}/agendamentos/${id}`, { method: 'DELETE' });
-        const link = await res.text();
-        notify("✅ Concluído!"); carregarFila();
-        setTimeout(() => { window.location.href = link; }, 1000);
+    function pedirConfirmacaoFinalizar(id) {
+        agendamentoParaFinalizar = id;
+        document.getElementById('modalConfirmar').style.display = 'flex';
     }
 
-    // --- CLIENTES (COM BOTAO EDITAR) ---
+    function fecharConfirmar() {
+        document.getElementById('modalConfirmar').style.display = 'none';
+    }
+
+    // AQUI ESTÁ A LÓGICA DE ENVIO QUE FUNCIONA
+    async function confirmarFinalizar() {
+        try {
+            const res = await fetch(`${API}/agendamentos/${agendamentoParaFinalizar}`, { method: 'DELETE' });
+            if (res.ok) {
+                let linkWpp = await res.text();
+                notify("✅ Atendimento finalizado!");
+                fecharConfirmar();
+                carregarFila();
+
+                if (linkWpp) {
+                    // Remove aspas que o Spring possa enviar e dispara o protocolo do Desktop
+                    linkWpp = linkWpp.replace(/"/g, '');
+                    window.location.assign(linkWpp);
+                }
+            }
+        } catch (e) { notify("Erro ao finalizar"); }
+    }
+
     async function carregarClientes() {
-        const res = await fetch(`${API}/animais`);
-        const pets = await res.json(); renderizarClientes(pets);
+        const container = document.getElementById('listaClientes');
+        container.innerHTML = `<div style="text-align:center; padding:40px; font-weight:700; color:#888;">⏳ Carregando clientes...</div>`;
+        try {
+            const res = await fetch(`${API}/animais`);
+            const pets = await res.json();
+            renderizarClientes(pets);
+        } catch (e) {
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:red;">Erro ao carregar clientes.</div>`;
+        }
     }
 
     async function filtrarClientesPorTelefone() {
         const tel = document.getElementById('buscaTelClientes').value;
-        const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
-
-        if(!res.ok) {
-            return notify("❌ Cliente não encontrado");
+        if(!tel) return notify("Digite um WhatsApp", "info");
+        setLoading('btnBuscarCliente', true, 'BUSCAR');
+        try {
+            const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
+            if(!res.ok) throw new Error();
+            const c = await res.json();
+            notify(`✅ Cliente ${c.nome} localizado!`, 'success');
+            const resP = await fetch(`${API}/animais`);
+            const pets = (await resP.json()).filter(p => p.dono.id === c.id);
+            renderizarClientes(pets);
+        } catch (e) {
+            notify("❌ Cliente não encontrado", 'error');
+        } finally {
+            setLoading('btnBuscarCliente', false, 'BUSCAR');
         }
-
-        const c = await res.json();
-        notify(`✅ Cliente ${c.nome} localizado!`);
-
-        const resP = await fetch(`${API}/animais`);
-        const pets = (await resP.json()).filter(p => p.dono.id === c.id);
-        renderizarClientes(pets);
     }
 
     function renderizarClientes(pets) {
         const container = document.getElementById('listaClientes');
         container.innerHTML = "";
+        const porDono = {};
         pets.forEach(p => {
+            if (!porDono[p.dono.id]) porDono[p.dono.id] = { dono: p.dono, pets: [] };
+            porDono[p.dono.id].pets.push(p);
+        });
+        const grupos = Object.values(porDono);
+        document.getElementById('counterNum').innerText = grupos.length;
+        document.getElementById('counterBar').style.display = grupos.length > 0 ? 'flex' : 'none';
+
+        if (grupos.length === 0) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-icon">🐶</div><p>Nenhum cliente encontrado.</p></div>`;
+            return;
+        }
+
+        grupos.forEach(grupo => {
+            const { dono, pets } = grupo;
+            const petsHtml = pets.map(p => `<div class="info-block"><span class="info-label">🐾 ${p.nome}</span><span class="info-text" style="color:var(--success); font-size:1.1rem">${p.raca}</span></div>`).join('');
             container.innerHTML += `
                 <div class="cliente-bar">
                     <div class="cliente-info">
-                        <div class="info-block"><span class="info-label">Pet</span><span class="info-text" style="color:var(--success)">${p.nome}</span></div>
-                        <div class="info-block"><span class="info-label">Dono</span><span class="info-text">${p.dono.nome}</span></div>
-                        <div class="info-block"><span class="info-label">WhatsApp</span><span class="info-text">${p.dono.telefone}</span></div>
-                        <div class="info-block" style="flex:2"><span class="info-label">📍 Endereço</span><span class="info-text end">${p.dono.endereco}</span></div>
+                        <div class="info-block"><span class="info-label">Dono</span><span class="info-text">${dono.nome}</span></div>
+                        <div class="info-block"><span class="info-label">WhatsApp</span><span class="info-text">${dono.telefone}</span></div>
+                        <div class="info-block" style="flex:2"><span class="info-label">📍 Endereço</span><span class="info-text end">${dono.endereco}</span></div>
+                        ${petsHtml}
                     </div>
-                    <button class="btn-main" style="width:140px; padding:15px; font-size:0.8rem; background:var(--warning); margin-top:0" onclick="abrirEdicao(${p.id}, ${p.dono.id})">✎ EDITAR</button>
+                    <button class="btn-main" style="width:140px; padding:15px; font-size:0.8rem; background:var(--warning); margin-top:0" onclick="abrirEdicao(${dono.id})">✎ EDITAR</button>
                 </div>`;
         });
     }
 
-    // --- LOGICA MODAL EDIÇÃO ---
-    async function abrirEdicao(petId, donoId) {
-        const resP = await fetch(`${API}/animais/${petId}`);
-        const p = await resP.json();
-        document.getElementById('editPetId').value = p.id;
-        document.getElementById('editClienteId').value = p.dono.id;
-        document.getElementById('editPetNome').value = p.nome;
-        document.getElementById('editRaca').value = p.raca;
-        document.getElementById('editNome').value = p.dono.nome;
-        document.getElementById('editTel').value = p.dono.telefone;
-        document.getElementById('editEnd').value = p.dono.endereco;
-        document.getElementById('modalEditar').style.display = 'flex';
+    async function abrirEdicao(donoId) {
+        try {
+            const resC = await fetch(`${API}/clientes/${donoId}`);
+            const dono = await resC.json();
+            const resP = await fetch(`${API}/animais`);
+            const pets = (await resP.json()).filter(p => p.dono.id === donoId);
+
+            document.getElementById('editClienteId').value = dono.id;
+            document.getElementById('editNome').value = dono.nome;
+            document.getElementById('editTel').value = dono.telefone;
+            document.getElementById('editEnd').value = dono.endereco;
+
+            const container = document.getElementById('editPetsContainer');
+            container.innerHTML = "";
+            pets.forEach((p, idx) => {
+                container.innerHTML += `
+                    <div class="pet-edit-card">
+                        <h3>🐾 Pet ${idx + 1}</h3>
+                        <input type="hidden" class="pet-id-field" value="${p.id}">
+                        <div class="grid">
+                            <div class="input-group"><label>Nome</label><input type="text" class="pet-nome-field" value="${p.nome}"></div>
+                            <div class="input-group"><label>Raça</label><input type="text" class="pet-raca-field" value="${p.raca}"></div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('modalEditar').style.display = 'flex';
+        } catch (e) { notify("Erro ao carregar edição", "error"); }
     }
 
     async function salvarEdicao() {
-        const pId = document.getElementById('editPetId').value;
+        setLoading('btnSalvarEdicao', true, 'Atualizar ✅');
         const cId = document.getElementById('editClienteId').value;
         const cObj = { nome: document.getElementById('editNome').value, telefone: document.getElementById('editTel').value, endereco: document.getElementById('editEnd').value, formaPagamento: "PIX" };
-        const pObj = { nome: document.getElementById('editPetNome').value, raca: document.getElementById('editRaca').value, clienteId: cId };
-        await fetch(`${API}/clientes/${cId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(cObj) });
-        await fetch(`${API}/animais/${pId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(pObj) });
-        notify("✅ Registro Atualizado!"); fecharModal(); carregarClientes();
+        try {
+            await fetch(`${API}/clientes/${cId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(cObj) });
+            const cards = document.querySelectorAll('.pet-edit-card');
+            for (const card of cards) {
+                const pId = card.querySelector('.pet-id-field').value;
+                const pObj = { nome: card.querySelector('.pet-nome-field').value, raca: card.querySelector('.pet-raca-field').value, clienteId: cId };
+                await fetch(`${API}/animais/${pId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(pObj) });
+            }
+            notify("✅ Registro Atualizado!", 'success');
+            fecharModal();
+            carregarClientes();
+        } catch (e) { notify("Erro ao salvar", "error"); } finally { setLoading('btnSalvarEdicao', false, 'Atualizar ✅'); }
     }
+
     function fecharModal() { document.getElementById('modalEditar').style.display = 'none'; }
 
-    // --- CADASTRO / BUSCA ---
     async function cadastrarDono() {
-        const c = { nome: document.getElementById('cliNome').value, telefone: document.getElementById('cliTel').value, endereco: document.getElementById('cliEnd').value, formaPagamento: "PIX" };
-        const res = await fetch(`${API}/clientes`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(c) });
-        const salvo = await res.json(); clienteAtualId = salvo.id;
-        document.getElementById('sectionDono').style.opacity = '0.3';
-        document.getElementById('sectionPet').style.display = 'block';
-        document.getElementById('spanDonoNome').innerText = salvo.nome;
+        const nome = document.getElementById('cliNome').value;
+        const tel = document.getElementById('cliTel').value;
+        if(!nome || !tel) return notify("Preencha Nome e WhatsApp", "info");
+        setLoading('btnCadastrarDono', true, 'Aguarde...');
+        try {
+            const res = await fetch(`${API}/clientes`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nome, telefone:tel, endereco:document.getElementById('cliEnd').value, formaPagamento:"PIX"}) });
+            const salvo = await res.json();
+            clienteAtualId = salvo.id;
+            document.getElementById('sectionDono').style.opacity = '0.3';
+            document.getElementById('sectionPet').style.display = 'block';
+            document.getElementById('spanDonoNome').innerText = salvo.nome;
+            notify(`✅ ${salvo.nome} cadastrado!`);
+        } catch (e) { notify("Erro no cadastro", "error"); } finally { setLoading('btnCadastrarDono', false, 'Próximo: Adicionar Pets 🐾'); }
     }
+
     async function cadastrarPet(outro) {
-        const p = { nome: document.getElementById('aniNome').value, raca: document.getElementById('aniRaca').value, clienteId: clienteAtualId };
-        await fetch(`${API}/animais`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(p) });
-        if(!outro) location.reload(); else { document.getElementById('aniNome').value = ""; notify("🐾 Pet Adicionado!"); }
+        const nome = document.getElementById('aniNome').value;
+        if(!nome) return notify("Digite o nome do pet", "info");
+        try {
+            await fetch(`${API}/animais`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({nome, raca:document.getElementById('aniRaca').value, clienteId:clienteAtualId}) });
+            if(!outro) location.reload(); else { document.getElementById('aniNome').value = ""; notify("🐾 Pet Adicionado!"); }
+        } catch (e) { notify("Erro ao adicionar pet", "error"); }
     }
+
     async function buscarFicha() {
         const tel = document.getElementById('buscaTel').value;
-        const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
-        if(!res.ok) return notify("❌ Não encontrado");
-        const c = await res.json();
-        document.getElementById('resDono').innerText = c.nome;
-        const resP = await fetch(`${API}/animais`);
-        const pets = (await resP.json()).filter(p => p.dono.id === c.id);
-        const s = document.getElementById('selectPet'); s.innerHTML = "";
-        pets.forEach(p => s.innerHTML += `<option value="${p.id}">${p.nome.toUpperCase()}</option>`);
-        document.getElementById('fichaCliente').style.display = 'block';
-        document.getElementById('areaServico').style.display = 'block';
+        if(!tel) return notify("Digite o WhatsApp", "info");
+        setLoading('btnBuscarFicha', true, 'Aguarde...');
+        try {
+            const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
+            if(!res.ok) throw new Error();
+            const c = await res.json();
+            document.getElementById('resDono').innerText = c.nome;
+            const resP = await fetch(`${API}/animais`);
+            const pets = (await resP.json()).filter(p => p.dono.id === c.id);
+            const s = document.getElementById('selectPet'); s.innerHTML = "";
+            pets.forEach(p => s.innerHTML += `<option value="${p.id}">${p.nome.toUpperCase()}</option>`);
+            document.getElementById('fichaCliente').style.display = 'block';
+            document.getElementById('areaServico').style.display = 'block';
+            notify(`✅ ${c.nome} encontrado!`);
+        } catch (e) { notify("❌ Cliente não encontrado", "error"); } finally { setLoading('btnBuscarFicha', false, 'Buscar 🔍'); }
     }
-    // ENVIO DE DESCRIÇÃO ADICIONADO NO POST
+
     async function confirmarAgenda() {
-        const dto = {
-            petId: document.getElementById('selectPet').value,
-            servico: document.getElementById('ageServico').value,
-            valor: document.getElementById('ageValor').value,
-            dataHora: document.getElementById('ageData').value,
-            formaPagamento: document.getElementById('agePagamento').value,
-            buscarEntregar: document.getElementById('ageTaxa').checked,
-            descricao: document.getElementById('ageDescricao').value // <--- CAMPO ENVIADO
-        };
-        await fetch(`${API}/agendamentos`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dto) });
-        showPage('lista', document.querySelectorAll('.nav-item')[2]);
+        const data = document.getElementById('ageData').value;
+        if(!data) return notify("Escolha a Data/Hora", "info");
+        setLoading('btnConfirmarAgenda', true, 'Aguarde...');
+        try {
+            const dto = { petId: document.getElementById('selectPet').value, servico: document.getElementById('ageServico').value, valor: document.getElementById('ageValor').value || 0, dataHora: data, formaPagamento: document.getElementById('agePagamento').value, buscarEntregar: document.getElementById('ageTaxa').checked, descricao: document.getElementById('ageDescricao').value };
+            const res = await fetch(`${API}/agendamentos`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dto) });
+            if(!res.ok) throw new Error();
+            notify("✅ Agendamento confirmado!");
+            showPage('lista', document.querySelectorAll('.nav-item')[2]);
+        } catch (e) { notify("Erro ao agendar", "error"); } finally { setLoading('btnConfirmarAgenda', false, 'Confirmar Horário 🎋'); }
     }
 </script>
 </body>
