@@ -27,7 +27,6 @@ public class ClienteModel {
     @Column(unique = true)
     private String telefone;
 
-    @NotBlank
     private String endereco;
 
 
