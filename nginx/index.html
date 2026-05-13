@@ -18,151 +18,223 @@
             --danger: #b91c1c;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg); color: #000;
             margin: 0; display: flex; height: 100vh; overflow: hidden;
         }
 
+        /* SIDEBAR */
         nav {
-            width: 110px; background: var(--sidebar); border-right: 3px solid var(--border);
-            display: flex; flex-direction: column; align-items: center; padding-top: 40px;
-            flex-shrink: 0;
+            width: 90px; background: var(--sidebar); border-right: 2px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; padding-top: 30px;
+            flex-shrink: 0; gap: 8px;
+        }
+        .nav-logo {
+            font-size: 1.8rem; font-weight: 900; color: var(--accent);
+            margin-bottom: 20px; letter-spacing: -2px; writing-mode: vertical-rl;
+            text-orientation: mixed; transform: rotate(180deg);
         }
         .nav-item {
-            display: flex; flex-direction: column; align-items: center; margin-bottom: 45px;
-            cursor: pointer; opacity: 0.8; transition: 0.2s; color: var(--brand);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 14px 10px; border-radius: 10px; width: 72px;
+            cursor: pointer; transition: all 0.2s; color: var(--brand);
+            opacity: 0.6;
         }
-        .nav-item.active { opacity: 1; font-weight: 900; transform: scale(1.1); }
-        .nav-item i { font-size: 32px; margin-bottom: 5px; font-style: normal; }
-        .nav-item span { font-size: 0.7rem; text-transform: uppercase; font-weight: 800; }
+        .nav-item:hover { opacity: 0.9; background: rgba(0,0,0,0.06); }
+        .nav-item.active {
+            opacity: 1; background: var(--brand); color: white;
+            transform: none;
+        }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; font-style: normal; }
+        .nav-item span { font-size: 0.6rem; text-transform: uppercase; font-weight: 800; }
 
-        main { flex: 1; padding: 40px 60px; overflow-y: auto; }
-        .page { display: none; max-width: 1300px; margin: 0 auto; animation: fadeIn 0.2s ease; }
+        main { flex: 1; padding: 35px 50px; overflow-y: auto; }
+        .page { display: none; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.2s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
         section {
-            background: var(--card); padding: 50px; border-radius: 12px;
-            border: 3px solid var(--brand); box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
+            background: var(--card); padding: 40px; border-radius: 16px;
+            border: 2px solid #ddd; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
         }
 
-        h1 { font-weight: 900; font-size: 2.8rem; margin-bottom: 40px; letter-spacing: -2px; }
-        h2 { font-size: 1.3rem; text-transform: uppercase; border-bottom: 5px solid var(--bg); padding-bottom: 10px; margin-bottom: 30px; font-weight: 900; }
+        h1 { font-weight: 900; font-size: 2.4rem; margin-bottom: 30px; letter-spacing: -2px; }
+        h2 { font-size: 1.1rem; text-transform: uppercase; border-bottom: 3px solid var(--bg);
+             padding-bottom: 10px; margin-bottom: 25px; font-weight: 900; color: var(--accent); }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .input-group { margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .input-group { margin-bottom: 20px; }
 
         label {
-            display: block; font-size: 1rem; font-weight: 900; color: var(--accent);
-            text-transform: uppercase; margin-bottom: 10px;
+            display: block; font-size: 0.8rem; font-weight: 900; color: var(--accent);
+            text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;
         }
 
         input, select, textarea {
-            width: 100%; padding: 20px; background: #fff; border: 3px solid var(--brand);
-            border-radius: 8px; font-size: 1.3rem; box-sizing: border-box; font-family: inherit;
-            color: #000; font-weight: 700;
+            width: 100%; padding: 16px 18px; background: #f8f7f5; border: 2px solid #e0dbd4;
+            border-radius: 10px; font-size: 1.1rem; font-family: inherit;
+            color: #000; font-weight: 700; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+            background: #fff;
         }
 
         .checkbox-container {
             display: flex; align-items: center; gap: 15px;
-            background: #f9f9f9; padding: 20px; border: 3px dashed var(--brand);
-            border-radius: 8px; cursor: pointer;
+            background: #f8f7f5; padding: 16px 18px; border: 2px dashed #ccc;
+            border-radius: 10px; cursor: pointer; transition: border-color 0.2s;
         }
-        .checkbox-container input { width: 30px; height: 30px; cursor: pointer; }
+        .checkbox-container:hover { border-color: var(--brand); }
+        .checkbox-container input { width: 22px; height: 22px; cursor: pointer; }
 
         .btn-main {
-            background: var(--brand); color: white; border: none; padding: 25px;
-            border-radius: 8px; font-weight: 900; cursor: pointer; width: 100%;
-            text-transform: uppercase; letter-spacing: 2px; font-size: 1.2rem; margin-top: 10px;
-            transition: opacity 0.2s;
+            background: var(--brand); color: white; border: none; padding: 18px;
+            border-radius: 10px; font-weight: 900; cursor: pointer; width: 100%;
+            text-transform: uppercase; letter-spacing: 1.5px; font-size: 1rem; margin-top: 8px;
+            transition: opacity 0.2s, transform 0.1s;
         }
-        .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-main:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-main:active { transform: translateY(0); }
+        .btn-main:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-        /* Tabelas */
+        /* TOGGLE AVULSO/MENSAL */
+        .tipo-toggle {
+            display: flex; background: #f0ede8; border-radius: 10px; padding: 4px;
+            margin-bottom: 24px; border: 2px solid #e0dbd4;
+        }
+        .tipo-toggle button {
+            flex: 1; padding: 14px; border: none; border-radius: 8px; cursor: pointer;
+            font-family: inherit; font-weight: 900; font-size: 0.95rem;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
+            background: transparent; color: #888;
+        }
+        .tipo-toggle button.active {
+            background: var(--brand); color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* TABELA */
+        .table-wrap { overflow-x: auto; border-radius: 12px; border: 2px solid #e0dbd4; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; color: #000; text-transform: uppercase; font-weight: 900; border-bottom: 4px solid var(--brand); font-size: 0.8rem; }
-        td { padding: 20px 15px; border-bottom: 2px solid var(--border); background: #fff; vertical-align: middle; }
-
-        .row-main { font-size: 1.4rem; font-weight: 900; color: #000; }
-        .row-sub { font-size: 1.1rem; color: #444; font-weight: 700; margin-top: 3px; }
-        .row-time { font-size: 1.4rem; font-weight: 900; color: #000; margin-top: 3px; }
-        .badge { display: inline-block; padding: 5px 12px; background: var(--brand); color: #fff; border-radius: 4px; font-size: 0.85rem; font-weight: 900; }
-
-        /* Estado vazio */
-        .empty-state {
-            text-align: center; padding: 80px 20px; color: #888;
+        th {
+            text-align: left; padding: 14px 16px; background: #f8f7f5;
+            color: var(--accent); text-transform: uppercase; font-weight: 900;
+            border-bottom: 2px solid #e0dbd4; font-size: 0.75rem; letter-spacing: 0.5px;
         }
-        .empty-state .empty-icon { font-size: 4rem; margin-bottom: 15px; }
-        .empty-state p { font-size: 1.3rem; font-weight: 700; }
+        td { padding: 16px; border-bottom: 1px solid #f0ede8; background: #fff; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fafaf9; }
 
-        /* Clientes */
-        .cliente-bar { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 3px solid var(--brand); border-radius: 8px; padding: 25px; margin-bottom: 15px; gap: 30px; }
-        .cliente-info { display: flex; gap: 40px; flex: 1; align-items: center; overflow: hidden; flex-wrap: wrap; }
+        .row-main { font-size: 1.1rem; font-weight: 900; color: #000; }
+        .row-sub { font-size: 0.9rem; color: #666; font-weight: 600; margin-top: 3px; }
+        .row-time { font-size: 1.1rem; font-weight: 900; color: var(--accent); margin-top: 3px; }
+        .badge {
+            display: inline-block; padding: 4px 10px; background: var(--brand);
+            color: #fff; border-radius: 6px; font-size: 0.75rem; font-weight: 900;
+        }
+
+        /* FILTRO DE DATA NA FILA */
+        .fila-header {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+            background: #f8f7f5; padding: 16px 20px; border-radius: 12px;
+            border: 2px solid #e0dbd4;
+        }
+        .fila-header label { margin: 0; white-space: nowrap; }
+        .fila-header input { margin: 0; flex: 1; max-width: 220px; }
+        .fila-header .count-badge {
+            margin-left: auto; background: var(--brand); color: white;
+            padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        /* ESTADO VAZIO */
+        .empty-state { text-align: center; padding: 60px 20px; color: #aaa; }
+        .empty-state .empty-icon { font-size: 3.5rem; margin-bottom: 12px; }
+        .empty-state p { font-size: 1.1rem; font-weight: 700; }
+
+        /* CLIENTES */
+        .cliente-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #fff; border: 2px solid #e8e4de; border-radius: 12px;
+            padding: 20px 24px; margin-bottom: 12px; gap: 20px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .cliente-bar:hover { border-color: #bbb; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .cliente-info { display: flex; gap: 30px; flex: 1; align-items: center; flex-wrap: wrap; }
         .info-block { display: flex; flex-direction: column; }
-        .info-label { font-size: 0.85rem; font-weight: 800; color: var(--border); text-transform: uppercase; margin-bottom: 4px; white-space: nowrap; }
-        .info-text { font-size: 1.4rem; font-weight: 800; white-space: nowrap; }
-        .info-text.end { white-space: normal; line-height: 1.2; font-size: 1.2rem; color: var(--accent); }
+        .info-label { font-size: 0.72rem; font-weight: 800; color: var(--border); text-transform: uppercase; margin-bottom: 3px; }
+        .info-text { font-size: 1.1rem; font-weight: 800; }
+        .info-text.end { white-space: normal; line-height: 1.2; font-size: 1rem; color: var(--accent); }
 
-        /* Contador de clientes */
+        /* COUNTER BAR */
         .counter-bar {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 20px; padding: 15px 20px;
-            background: #fff; border: 3px solid var(--brand); border-radius: 8px;
+            margin-bottom: 16px; padding: 12px 18px;
+            background: #fff; border: 2px solid #e0dbd4; border-radius: 10px;
         }
-        .counter-bar span { font-weight: 900; font-size: 1rem; text-transform: uppercase; }
-        .counter-num { font-size: 1.5rem; font-weight: 900; color: var(--accent); }
+        .counter-bar span { font-weight: 900; font-size: 0.85rem; text-transform: uppercase; color: #888; }
+        .counter-num { font-size: 1.3rem; font-weight: 900; color: var(--accent); }
 
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
+        /* MODAL */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; backdrop-filter: blur(2px); }
         .modal-content {
-            background: var(--bg); padding: 40px; border-radius: 15px;
-            width: 90%; max-width: 750px; border: 4px solid var(--brand);
+            background: var(--bg); padding: 36px; border-radius: 20px;
+            width: 90%; max-width: 750px; border: 3px solid var(--brand);
             max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
+        .modal-confirm .modal-content { max-width: 460px; text-align: center; }
+        .modal-confirm h2 { border: none; font-size: 1.4rem; margin-bottom: 8px; }
+        .modal-confirm p { font-size: 1rem; color: #666; font-weight: 600; margin-bottom: 25px; }
 
-        /* Modal de confirmação */
-        .modal-confirm .modal-content {
-            max-width: 480px; text-align: center;
-        }
-        .modal-confirm h2 { border: none; font-size: 1.5rem; margin-bottom: 10px; }
-        .modal-confirm p { font-size: 1.1rem; color: #555; font-weight: 600; margin-bottom: 30px; }
-
-        /* Card de pet no modal */
         .pet-edit-card {
-            background: #fff; border: 3px solid var(--brand); border-radius: 10px;
-            padding: 25px; margin-bottom: 20px;
+            background: #fff; border: 2px solid #e0dbd4; border-radius: 12px;
+            padding: 20px; margin-bottom: 16px;
         }
         .pet-edit-card h3 {
-            font-size: 1rem; text-transform: uppercase; font-weight: 900;
-            color: var(--accent); margin: 0 0 20px 0;
-            border-bottom: 3px solid var(--bg); padding-bottom: 10px;
+            font-size: 0.85rem; text-transform: uppercase; font-weight: 900;
+            color: var(--accent); margin: 0 0 16px 0;
+            border-bottom: 2px solid var(--bg); padding-bottom: 8px;
         }
 
-        /* Notificação colorida — #7 */
-        #notification {
-            position: fixed; top: 20px; right: 20px; padding: 25px 50px;
-            border-radius: 4px; display: none; z-index: 99999; font-weight: 900;
-            font-size: 1.3rem; border: 4px solid white; transition: background 0.2s;
+        /* FICHA CLIENTE */
+        .ficha-box {
+            background: #fffef5; border: 2px solid #e8d87a; border-radius: 12px;
+            padding: 24px; margin-bottom: 24px;
         }
-        #notification.success { background: var(--success); }
-        #notification.error   { background: var(--danger); }
-        #notification.info    { background: var(--info); }
+        .ficha-nome { font-size: 1.8rem; font-weight: 900; margin-top: 6px; }
+
+        /* NOTIFICAÇÃO */
+        #notification {
+            position: fixed; top: 20px; right: 20px; padding: 16px 32px;
+            border-radius: 10px; display: none; z-index: 99999; font-weight: 900;
+            font-size: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        #notification.success { background: var(--success); color: white; }
+        #notification.error   { background: var(--danger); color: white; }
+        #notification.info    { background: var(--info); color: white; }
     </style>
 </head>
 <body>
 
 <div id="notification"></div>
 
-<!-- Modal confirmação finalizar — #4 -->
+<!-- Modal confirmação finalizar -->
 <div id="modalConfirmar" class="modal modal-confirm">
     <div class="modal-content">
+        <div style="font-size:3rem; margin-bottom:10px;">⚠️</div>
         <h2>Finalizar Atendimento?</h2>
         <p>Isso vai remover o agendamento da fila.<br>Essa ação não pode ser desfeita.</p>
         <div class="grid">
             <button class="btn-main" style="background: var(--success)" onclick="confirmarFinalizar()">Sim, Finalizar ✅</button>
-            <button class="btn-main" style="background: #666" onclick="fecharConfirmar()">Cancelar</button>
+            <button class="btn-main" style="background: #888" onclick="fecharConfirmar()">Cancelar</button>
         </div>
     </div>
 </div>
@@ -172,22 +244,19 @@
     <div class="modal-content">
         <h1>Editar <b>Registro</b></h1>
         <input type="hidden" id="editClienteId">
-
-        <div style="background:#fff; border: 3px solid var(--brand); border-radius:10px; padding:25px; margin-bottom:25px;">
-            <h2 style="margin-bottom:20px;">👤 Dados do Dono</h2>
+        <div style="background:#fff; border: 2px solid #e0dbd4; border-radius:12px; padding:24px; margin-bottom:20px;">
+            <h2 style="margin-bottom:18px;">👤 Dados do Dono</h2>
             <div class="grid">
                 <div class="input-group"><label>Nome</label><input type="text" id="editNome"></div>
                 <div class="input-group"><label>WhatsApp</label><input type="text" id="editTel"></div>
             </div>
             <div class="input-group"><label>Endereço</label><input type="text" id="editEnd"></div>
         </div>
-
-        <h2 style="margin-bottom:15px;">🐾 Pets</h2>
+        <h2 style="margin-bottom:14px;">🐾 Pets</h2>
         <div id="editPetsContainer"></div>
-
-        <div class="grid" style="margin-top:10px;">
+        <div class="grid" style="margin-top:8px;">
             <button class="btn-main" id="btnSalvarEdicao" style="background: var(--success)" onclick="salvarEdicao()">Atualizar ✅</button>
-            <button class="btn-main" style="background: #666" onclick="fecharModal()">Cancelar</button>
+            <button class="btn-main" style="background: #888" onclick="fecharModal()">Cancelar</button>
         </div>
     </div>
 </div>
@@ -212,7 +281,7 @@
             <div class="input-group"><label>Endereço Completo</label><input type="text" id="cliEnd"></div>
             <button class="btn-main" id="btnCadastrarDono" onclick="cadastrarDono()">Próximo: Adicionar Pets 🐾</button>
         </section>
-        <section id="sectionPet" style="display:none; margin-top: 30px;">
+        <section id="sectionPet" style="display:none; margin-top: 20px;">
             <h2 style="color: var(--success);">2. Cadastrar Animal para <span id="spanDonoNome"></span></h2>
             <div class="grid">
                 <div class="input-group"><label>Nome do Pet</label><input type="text" id="aniNome"></div>
@@ -229,34 +298,52 @@
     <div id="agendamento" class="page">
         <h1>Novo <b>Agendamento</b></h1>
         <section>
-            <div style="display:flex; gap:15px; margin-bottom:40px">
+            <div style="display:flex; gap:12px; margin-bottom:30px">
                 <input type="text" id="buscaTel" placeholder="WhatsApp do cliente...">
-                <button class="btn-main" id="btnBuscarFicha" style="width:280px; margin-top:0" onclick="buscarFicha()">Buscar 🔍</button>
+                <button class="btn-main" id="btnBuscarFicha" style="width:220px; margin-top:0" onclick="buscarFicha()">Buscar 🔍</button>
             </div>
-            <div id="fichaCliente" style="display:none; background: #fffdeb; border: 4px solid var(--brand); padding: 30px; border-radius: 8px; margin-bottom: 30px;">
-                <label>Tutor(a):</label>
-                <div id="resDono" style="font-size: 2rem; font-weight: 900;"></div>
-                <div style="margin-top:25px">
-                    <label>Selecione o Pet:</label>
-                    <select id="selectPet"></select>
+
+            <div id="fichaCliente" style="display:none;" class="ficha-box">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div style="flex:1">
+                        <label>Tutor(a):</label>
+                        <div id="resDono" class="ficha-nome"></div>
+                        <div style="margin-top:20px">
+                            <label>Selecione o Pet:</label>
+                            <select id="selectPet"></select>
+                        </div>
+                    </div>
+                    <button onclick="limparFicha()" title="Remover cliente"
+                            style="background:none; border:2px solid #ddd; border-radius:8px; width:36px; height:36px;
+                               cursor:pointer; font-size:1.1rem; color:#999; flex-shrink:0; margin-left:12px;
+                               transition:all 0.2s; display:flex; align-items:center; justify-content:center;"
+                            onmouseover="this.style.borderColor='var(--danger)';this.style.color='var(--danger)'"
+                            onmouseout="this.style.borderColor='#ddd';this.style.color='#999'">✕</button>
                 </div>
             </div>
+
             <div id="areaServico" style="display:none">
+                <!-- TOGGLE AVULSO / MENSAL -->
+                <div class="tipo-toggle" style="margin-bottom:20px;">
+                    <button id="btnAvulso" class="active" onclick="setTipo('avulso')">💳 Avulso</button>
+                    <button id="btnMensal" onclick="setTipo('mensal')">📅 Mensal</button>
+                </div>
+
                 <div class="grid">
                     <div class="input-group"><label>Serviço</label><select id="ageServico"><option>Banho</option><option>Tosa</option><option>Banho & Tosa</option><option>Tosa Higiênica</option></select></div>
-                    <div class="input-group"><label>Pagamento</label><select id="agePagamento"><option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option><option value="Cartão Débito">Cartão Débito</option><option value="Cartão Crédito">Cartão Crédito</option></select></div>
+                    <div class="input-group" id="grupoPagamento"><label>Pagamento</label><select id="agePagamento"><option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option><option value="Cartão Débito">Cartão Débito</option><option value="Cartão Crédito">Cartão Crédito</option></select></div>
                 </div>
                 <div class="grid">
-                    <div class="input-group"><label>Valor R$</label><input type="number" id="ageValor" step="0.01"></div>
+                    <div class="input-group" id="grupoValor"><label>Valor R$</label><input type="number" id="ageValor" step="0.01" placeholder="0,00"></div>
                     <div class="input-group"><label>Data / Hora</label><input type="datetime-local" id="ageData"></div>
                 </div>
-                <div class="input-group" style="margin-top:10px">
+                <div class="input-group">
                     <label class="checkbox-container">
                         <input type="checkbox" id="ageTaxa">
                         <span style="font-weight: 900;">PRECISA BUSCAR E ENTREGAR O PET? 🚚</span>
                     </label>
                 </div>
-                <div class="input-group" style="margin-top:20px">
+                <div class="input-group" style="margin-top:12px">
                     <label>Anotações / Descrição do Serviço</label>
                     <textarea id="ageDescricao" rows="3" placeholder="Ex: Alérgico a shampoo, tosa baixa..."></textarea>
                 </div>
@@ -268,7 +355,14 @@
     <!-- FILA -->
     <div id="lista" class="page">
         <h1>Fila de <b>Trabalho</b></h1>
-        <section style="padding: 20px;">
+        <section>
+            <!-- FILTRO POR DATA -->
+            <div class="fila-header">
+                <label>📅 Filtrar por dia:</label>
+                <input type="date" id="filtroData" onchange="filtrarFila()" style="max-width:200px;">
+                <button class="btn-main" style="width:auto; padding:12px 20px; margin:0; font-size:0.8rem; background:#888" onclick="limparFiltro()">Ver Todos</button>
+                <div class="count-badge" id="countFila">0 agendamentos</div>
+            </div>
             <div id="filaConteudo"></div>
         </section>
     </div>
@@ -276,13 +370,13 @@
     <!-- CLIENTES -->
     <div id="clientes" class="page">
         <h1>Gestão de <b>Clientes</b></h1>
-        <div style="display:flex; gap:15px; margin-bottom:20px">
+        <div style="display:flex; gap:12px; margin-bottom:16px">
             <input type="text" id="buscaTelClientes" placeholder="Buscar por WhatsApp...">
-            <button class="btn-main" id="btnBuscarCliente" style="width:200px; margin-top:0" onclick="filtrarClientesPorTelefone()">BUSCAR</button>
-            <button class="btn-main" style="width:200px; margin-top:0; background:#555" onclick="carregarClientes()">VER TODOS</button>
+            <button class="btn-main" id="btnBuscarCliente" style="width:180px; margin-top:0" onclick="filtrarClientesPorTelefone()">BUSCAR</button>
+            <button class="btn-main" style="width:180px; margin-top:0; background:#888" onclick="carregarClientes()">VER TODOS</button>
         </div>
         <div id="counterBar" class="counter-bar" style="display:none">
-            <span>Total de clientes</span>
+            <span>Total de clientes cadastrados</span>
             <span class="counter-num" id="counterNum">0</span>
         </div>
         <div id="listaClientes"></div>
@@ -293,6 +387,8 @@
     const API = "/api";
     let clienteAtualId = null;
     let agendamentoParaFinalizar = null;
+    let tipoAgendamento = 'avulso';
+    let todosAgendamentos = [];
 
     function showPage(id, el) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -303,16 +399,12 @@
         if(id === 'clientes') carregarClientes();
     }
 
-    // --- NOTIFICAÇÃO COLORIDA — #7 ---
     function notify(msg, tipo = 'success') {
         const n = document.getElementById('notification');
-        n.className = tipo;
-        n.innerText = msg;
-        n.style.display = 'block';
+        n.className = tipo; n.innerText = msg; n.style.display = 'block';
         setTimeout(() => n.style.display = 'none', 3000);
     }
 
-    // --- LOADING NOS BOTÕES — #1 ---
     function setLoading(btnId, loading, textoOriginal) {
         const btn = document.getElementById(btnId);
         if (!btn) return;
@@ -320,52 +412,120 @@
         btn.innerText = loading ? '⏳ Aguarde...' : textoOriginal;
     }
 
+    // --- TOGGLE AVULSO / MENSAL ---
+    function setTipo(tipo) {
+        tipoAgendamento = tipo;
+        document.getElementById('btnAvulso').classList.toggle('active', tipo === 'avulso');
+        document.getElementById('btnMensal').classList.toggle('active', tipo === 'mensal');
+        const grupoValor = document.getElementById('grupoValor');
+        const grupoPagamento = document.getElementById('grupoPagamento');
+        if (tipo === 'mensal') {
+            grupoValor.style.display = 'none';
+            grupoPagamento.style.display = 'none';
+            document.getElementById('ageValor').value = '0.01';
+            document.getElementById('agePagamento').value = 'Pix';
+        } else {
+            grupoValor.style.display = 'block';
+            grupoPagamento.style.display = 'block';
+        }
+    }
+
     // --- FILA ---
     async function carregarFila() {
         const container = document.getElementById('filaConteudo');
-        container.innerHTML = `<div style="text-align:center; padding:40px; font-weight:700; color:#888;">⏳ Carregando fila...</div>`;
-        const res = await fetch(`${API}/agendamentos`);
-        const dados = await res.json();
+        container.innerHTML = `<div style="text-align:center; padding:40px; font-weight:700; color:#aaa;">⏳ Carregando fila...</div>`;
+        try {
+            const res = await fetch(`${API}/agendamentos`);
+            todosAgendamentos = await res.json();
+            renderizarFila(todosAgendamentos);
+        } catch(e) {
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:red;">Erro ao carregar fila.</div>`;
+        }
+    }
 
-        // Estado vazio — #3
+    function filtrarFila() {
+        const data = document.getElementById('filtroData').value;
+        if (!data) { renderizarFila(todosAgendamentos); return; }
+        const filtrados = todosAgendamentos.filter(a => {
+            const dAgenda = new Date(a.dataHora).toISOString().split('T')[0];
+            return dAgenda === data;
+        });
+        renderizarFila(filtrados);
+    }
+
+    function limparFiltro() {
+        document.getElementById('filtroData').value = '';
+        renderizarFila(todosAgendamentos);
+    }
+
+    function renderizarFila(dados) {
+        const container = document.getElementById('filaConteudo');
+        const countEl = document.getElementById('countFila');
+        countEl.innerText = `${dados.length} agendamento${dados.length !== 1 ? 's' : ''}`;
+
         if (dados.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">🐾</div>
-                    <p>Nenhum atendimento na fila agora.</p>
+                    <p>Nenhum atendimento encontrado.</p>
                 </div>`;
             return;
         }
 
-        let tableHtml = `<table id="tabelaFila">
+        let html = `<div class="table-wrap"><table>
             <thead><tr>
-                <th>Dono / Endereço</th>
-                <th>Pet / Raça</th>
-                <th>Serviço / Pagamento</th>
-                <th>Valor / Hora</th>
-                <th>Ações</th>
+                <th style="width:25%">Cliente</th>
+                <th style="width:15%">Pet</th>
+                <th style="width:20%">Serviço</th>
+                <th style="width:18%">Pagamento</th>
+                <th style="width:12%">Horário</th>
+                <th style="width:10%">Ação</th>
             </tr></thead><tbody>`;
 
         dados.forEach(a => {
             const dataFmt = new Date(a.dataHora).toLocaleString('pt-BR', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit'});
-            const entrega = a.buscarEntregar ? '<span class="badge" style="background:#d35400; margin-top:5px">🚚 BUSCAR/ENTREGAR</span>' : '';
-            const descHtml = a.descricao ? `<div style="font-size: 0.9rem; color: #666; font-style: italic; margin-top: 5px; border-left: 2px solid var(--brand); padding-left: 8px;">"${a.descricao}"</div>` : '';
-            tableHtml += `
+            const isMensal = a.valor <= 0.01;
+            const entrega = a.buscarEntregar ? '<div style="margin-top:6px"><span class="badge" style="background:#d35400;">🚚 BUSCAR/ENTREGAR</span></div>' : '';
+            const descHtml = a.descricao ? `<div style="font-size:0.8rem; color:#999; font-style:italic; margin-top:5px; padding-top:5px; border-top:1px solid #f0ede8;">"${a.descricao}"</div>` : '';
+
+            // Coluna pagamento — mensal mostra badge especial, avulso mostra valor + forma
+            const pagamentoHtml = isMensal
+                ? `<span class="badge" style="background:var(--success); font-size:0.8rem;">📅 MENSALISTA</span>
+                   <div style="font-size:0.8rem; color:#666; margin-top:5px;">💳 ${a.formaPagamento}</div>`
+                : `<div style="font-size:1.1rem; font-weight:900;">R$ ${a.valor.toFixed(2)}</div>
+                   <div style="font-size:0.85rem; color:#666; margin-top:3px;">💳 ${a.formaPagamento}</div>`;
+
+            html += `
                 <tr>
-                    <td><div class="row-main">${a.pet.dono.nome}</div><div class="row-sub">📍 ${a.pet.dono.endereco}</div></td>
-                    <td><div class="row-main">${a.pet.nome.toUpperCase()}</div><div class="row-sub">${a.pet.raca}</div></td>
-                    <td><div class="row-main">${a.servico}</div><div class="row-sub">💰 ${a.formaPagamento}</div>${entrega}${descHtml}</td>
-                    <td><div class="row-main">R$ ${a.valor.toFixed(2)}</div><div class="row-time">${dataFmt}</div></td>
-                    <td><button class="btn-main" style="padding:15px; font-size:0.85rem; background:var(--success); margin-top:0"
-                        onclick="pedirConfirmacaoFinalizar(${a.id})">FINALIZAR</button></td>
+                    <td>
+                        <div class="row-main">${a.pet.dono.nome}</div>
+                        <div class="row-sub">📍 ${a.pet.dono.endereco}</div>
+                    </td>
+                    <td>
+                        <div class="row-main">${a.pet.nome.toUpperCase()}</div>
+                        <div class="row-sub">${a.pet.raca}</div>
+                    </td>
+                    <td>
+                        <div class="row-main">${a.servico}</div>
+                        ${entrega}
+                        ${descHtml}
+                    </td>
+                    <td>${pagamentoHtml}</td>
+                    <td>
+                        <div style="font-size:1rem; font-weight:900; color:var(--accent);">${dataFmt.split(',')[1]?.trim() || dataFmt}</div>
+                        <div style="font-size:0.8rem; color:#888; margin-top:2px;">${dataFmt.split(',')[0]}</div>
+                    </td>
+                    <td>
+                        <button class="btn-main" style="padding:10px 8px; font-size:0.75rem; background:var(--success); margin-top:0; width:100%"
+                            onclick="pedirConfirmacaoFinalizar(${a.id})">FINALIZAR</button>
+                    </td>
                 </tr>`;
         });
 
-        tableHtml += `</tbody></table>`;
-        container.innerHTML = tableHtml;
+        html += `</tbody></table></div>`;
+        container.innerHTML = html;
     }
 
-    // Confirmação antes de finalizar — #4
     function pedirConfirmacaoFinalizar(id) {
         agendamentoParaFinalizar = id;
         document.getElementById('modalConfirmar').style.display = 'flex';
@@ -385,81 +545,64 @@
 
     // --- CLIENTES ---
     async function carregarClientes() {
-        setLoading(null, false, '');
         const container = document.getElementById('listaClientes');
-        container.innerHTML = `<div style="text-align:center; padding:40px; font-weight:700; color:#888;">⏳ Carregando clientes...</div>`;
-        const res = await fetch(`${API}/animais`);
-        const pets = await res.json();
-        renderizarClientes(pets);
+        container.innerHTML = `<div style="text-align:center; padding:40px; font-weight:700; color:#aaa;">⏳ Carregando clientes...</div>`;
+        try {
+            const res = await fetch(`${API}/animais`);
+            renderizarClientes(await res.json());
+        } catch(e) {
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:red;">Erro ao carregar.</div>`;
+        }
     }
 
     async function filtrarClientesPorTelefone() {
         const tel = document.getElementById('buscaTelClientes').value;
+        if(!tel) return notify("Digite um WhatsApp", "info");
         setLoading('btnBuscarCliente', true, 'BUSCAR');
-        const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
-        setLoading('btnBuscarCliente', false, 'BUSCAR');
-        if(!res.ok) return notify("❌ Cliente não encontrado", 'error');
-        const c = await res.json();
-        notify(`✅ Cliente ${c.nome} localizado!`, 'success');
-        const resP = await fetch(`${API}/animais`);
-        const pets = (await resP.json()).filter(p => p.dono.id === c.id);
-        renderizarClientes(pets);
+        try {
+            const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
+            if(!res.ok) throw new Error();
+            const c = await res.json();
+            notify(`✅ Cliente ${c.nome} localizado!`, 'success');
+            const resP = await fetch(`${API}/animais`);
+            renderizarClientes((await resP.json()).filter(p => p.dono.id === c.id));
+        } catch(e) {
+            notify("❌ Cliente não encontrado", 'error');
+        } finally {
+            setLoading('btnBuscarCliente', false, 'BUSCAR');
+        }
     }
 
     function renderizarClientes(pets) {
         const container = document.getElementById('listaClientes');
         container.innerHTML = "";
-
-        // Agrupa por dono
         const porDono = {};
         pets.forEach(p => {
             if (!porDono[p.dono.id]) porDono[p.dono.id] = { dono: p.dono, pets: [] };
             porDono[p.dono.id].pets.push(p);
         });
-
         const grupos = Object.values(porDono);
-
-        // Contador — #2
-        const counterBar = document.getElementById('counterBar');
         document.getElementById('counterNum').innerText = grupos.length;
-        counterBar.style.display = grupos.length > 0 ? 'flex' : 'none';
-
-        // Estado vazio — #3
+        document.getElementById('counterBar').style.display = grupos.length > 0 ? 'flex' : 'none';
         if (grupos.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-icon">🐶</div>
-                    <p>Nenhum cliente encontrado.</p>
-                </div>`;
+            container.innerHTML = `<div class="empty-state"><div class="empty-icon">🐶</div><p>Nenhum cliente encontrado.</p></div>`;
             return;
         }
-
-        grupos.forEach(grupo => {
-            const { dono, pets } = grupo;
+        grupos.forEach(({ dono, pets }) => {
             const petsHtml = pets.map(p => `
                 <div class="info-block">
                     <span class="info-label">🐾 ${p.nome}</span>
-                    <span class="info-text" style="color:var(--success); font-size:1.1rem">${p.raca}</span>
+                    <span class="info-text" style="color:var(--success); font-size:1rem">${p.raca}</span>
                 </div>`).join('');
-
             container.innerHTML += `
                 <div class="cliente-bar">
                     <div class="cliente-info">
-                        <div class="info-block">
-                            <span class="info-label">Dono</span>
-                            <span class="info-text">${dono.nome}</span>
-                        </div>
-                        <div class="info-block">
-                            <span class="info-label">WhatsApp</span>
-                            <span class="info-text">${dono.telefone}</span>
-                        </div>
-                        <div class="info-block" style="flex:2">
-                            <span class="info-label">📍 Endereço</span>
-                            <span class="info-text end">${dono.endereco}</span>
-                        </div>
+                        <div class="info-block"><span class="info-label">Dono</span><span class="info-text">${dono.nome}</span></div>
+                        <div class="info-block"><span class="info-label">WhatsApp</span><span class="info-text">${dono.telefone}</span></div>
+                        <div class="info-block" style="flex:2"><span class="info-label">📍 Endereço</span><span class="info-text end">${dono.endereco}</span></div>
                         ${petsHtml}
                     </div>
-                    <button class="btn-main" style="width:140px; padding:15px; font-size:0.8rem; background:var(--warning); margin-top:0; flex-shrink:0"
+                    <button class="btn-main" style="width:120px; padding:12px; font-size:0.75rem; background:var(--warning); margin-top:0; flex-shrink:0"
                         onclick="abrirEdicao(${dono.id})">✎ EDITAR</button>
                 </div>`;
         });
@@ -467,125 +610,137 @@
 
     // --- MODAL EDIÇÃO ---
     async function abrirEdicao(donoId) {
-        const resC = await fetch(`${API}/clientes/${donoId}`);
-        const dono = await resC.json();
-        const resP = await fetch(`${API}/animais`);
-        const todosPets = await resP.json();
-        const pets = todosPets.filter(p => p.dono.id === donoId);
-
-        document.getElementById('editClienteId').value = dono.id;
-        document.getElementById('editNome').value = dono.nome;
-        document.getElementById('editTel').value = dono.telefone;
-        document.getElementById('editEnd').value = dono.endereco;
-
-        const container = document.getElementById('editPetsContainer');
-        container.innerHTML = "";
-        pets.forEach((p, idx) => {
-            container.innerHTML += `
-                <div class="pet-edit-card">
-                    <h3>🐾 Pet ${idx + 1}</h3>
-                    <input type="hidden" class="pet-id-field" value="${p.id}">
-                    <div class="grid">
-                        <div class="input-group">
-                            <label>Nome</label>
-                            <input type="text" class="pet-nome-field" value="${p.nome}">
+        try {
+            const resC = await fetch(`${API}/clientes/${donoId}`);
+            const dono = await resC.json();
+            const resP = await fetch(`${API}/animais`);
+            const pets = (await resP.json()).filter(p => p.dono.id === donoId);
+            document.getElementById('editClienteId').value = dono.id;
+            document.getElementById('editNome').value = dono.nome;
+            document.getElementById('editTel').value = dono.telefone;
+            document.getElementById('editEnd').value = dono.endereco;
+            const container = document.getElementById('editPetsContainer');
+            container.innerHTML = "";
+            pets.forEach((p, idx) => {
+                container.innerHTML += `
+                    <div class="pet-edit-card">
+                        <h3>🐾 Pet ${idx + 1}</h3>
+                        <input type="hidden" class="pet-id-field" value="${p.id}">
+                        <div class="grid">
+                            <div class="input-group"><label>Nome</label><input type="text" class="pet-nome-field" value="${p.nome}"></div>
+                            <div class="input-group"><label>Raça</label><input type="text" class="pet-raca-field" value="${p.raca}"></div>
                         </div>
-                        <div class="input-group">
-                            <label>Raça</label>
-                            <input type="text" class="pet-raca-field" value="${p.raca}">
-                        </div>
-                    </div>
-                </div>`;
-        });
-
-        document.getElementById('modalEditar').style.display = 'flex';
+                    </div>`;
+            });
+            document.getElementById('modalEditar').style.display = 'flex';
+        } catch(e) { notify("Erro ao abrir edição", "error"); }
     }
 
     async function salvarEdicao() {
         setLoading('btnSalvarEdicao', true, 'Atualizar ✅');
         const cId = document.getElementById('editClienteId').value;
-        const cObj = {
-            nome: document.getElementById('editNome').value,
-            telefone: document.getElementById('editTel').value,
-            endereco: document.getElementById('editEnd').value,
-            formaPagamento: "PIX"
-        };
-        await fetch(`${API}/clientes/${cId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(cObj) });
-
-        const cards = document.querySelectorAll('#editPetsContainer .pet-edit-card');
-        for (const card of cards) {
-            const pId = card.querySelector('.pet-id-field').value;
-            const pObj = {
-                nome: card.querySelector('.pet-nome-field').value,
-                raca: card.querySelector('.pet-raca-field').value,
-                clienteId: cId
-            };
-            await fetch(`${API}/animais/${pId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(pObj) });
-        }
-
-        setLoading('btnSalvarEdicao', false, 'Atualizar ✅');
-        notify("✅ Registro Atualizado!", 'success');
-        fecharModal();
-        carregarClientes();
+        try {
+            await fetch(`${API}/clientes/${cId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ nome: document.getElementById('editNome').value, telefone: document.getElementById('editTel').value, endereco: document.getElementById('editEnd').value, formaPagamento: "PIX" }) });
+            for (const card of document.querySelectorAll('#editPetsContainer .pet-edit-card')) {
+                await fetch(`${API}/animais/${card.querySelector('.pet-id-field').value}`, { method: 'PUT', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ nome: card.querySelector('.pet-nome-field').value, raca: card.querySelector('.pet-raca-field').value, clienteId: cId }) });
+            }
+            notify("✅ Registro Atualizado!", 'success'); fecharModal(); carregarClientes();
+        } catch(e) { notify("Erro ao salvar", "error"); }
+        finally { setLoading('btnSalvarEdicao', false, 'Atualizar ✅'); }
     }
 
     function fecharModal() { document.getElementById('modalEditar').style.display = 'none'; }
 
     // --- CADASTRO ---
     async function cadastrarDono() {
-        setLoading('btnCadastrarDono', true, 'Próximo: Adicionar Pets 🐾');
-        const c = { nome: document.getElementById('cliNome').value, telefone: document.getElementById('cliTel').value, endereco: document.getElementById('cliEnd').value, formaPagamento: "PIX" };
-        const res = await fetch(`${API}/clientes`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(c) });
-        setLoading('btnCadastrarDono', false, 'Próximo: Adicionar Pets 🐾');
-        if (!res.ok) return notify("❌ Erro ao cadastrar dono", 'error');
-        const salvo = await res.json();
-        clienteAtualId = salvo.id;
-        document.getElementById('sectionDono').style.opacity = '0.3';
-        document.getElementById('sectionPet').style.display = 'block';
-        document.getElementById('spanDonoNome').innerText = salvo.nome;
-        notify(`✅ ${salvo.nome} cadastrado!`, 'success');
+        const nome = document.getElementById('cliNome').value;
+        const tel = document.getElementById('cliTel').value;
+        if(!nome || !tel) return notify("Preencha Nome e WhatsApp", "info");
+        setLoading('btnCadastrarDono', true, 'Aguarde...');
+        try {
+            const res = await fetch(`${API}/clientes`, { method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ nome, telefone: tel, endereco: document.getElementById('cliEnd').value, formaPagamento: "PIX" }) });
+            if(!res.ok) throw new Error();
+            const salvo = await res.json();
+            clienteAtualId = salvo.id;
+            document.getElementById('sectionDono').style.opacity = '0.3';
+            document.getElementById('sectionPet').style.display = 'block';
+            document.getElementById('spanDonoNome').innerText = salvo.nome;
+            notify(`✅ ${salvo.nome} cadastrado!`);
+        } catch(e) { notify("Erro no cadastro", "error"); }
+        finally { setLoading('btnCadastrarDono', false, 'Próximo: Adicionar Pets 🐾'); }
     }
 
     async function cadastrarPet(outro) {
-        const p = { nome: document.getElementById('aniNome').value, raca: document.getElementById('aniRaca').value, clienteId: clienteAtualId };
-        await fetch(`${API}/animais`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(p) });
-        if(!outro) location.reload(); else { document.getElementById('aniNome').value = ""; notify("🐾 Pet Adicionado!", 'success'); }
+        const nome = document.getElementById('aniNome').value;
+        if(!nome) return notify("Digite o nome do pet", "info");
+        try {
+            await fetch(`${API}/animais`, { method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ nome, raca: document.getElementById('aniRaca').value, clienteId: clienteAtualId }) });
+            if(!outro) location.reload(); else { document.getElementById('aniNome').value = ""; notify("🐾 Pet Adicionado!"); }
+        } catch(e) { notify("Erro ao adicionar pet", "error"); }
+    }
+
+    function limparFicha() {
+        document.getElementById('fichaCliente').style.display = 'none';
+        document.getElementById('areaServico').style.display = 'none';
+        document.getElementById('buscaTel').value = '';
+        document.getElementById('ageValor').value = '';
+        document.getElementById('ageDescricao').value = '';
+        document.getElementById('ageTaxa').checked = false;
+        setTipo('avulso');
     }
 
     async function buscarFicha() {
-        setLoading('btnBuscarFicha', true, 'Buscar 🔍');
         const tel = document.getElementById('buscaTel').value;
-        const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
-        setLoading('btnBuscarFicha', false, 'Buscar 🔍');
-        if(!res.ok) return notify("❌ Cliente não encontrado", 'error');
-        const c = await res.json();
-        document.getElementById('resDono').innerText = c.nome;
-        const resP = await fetch(`${API}/animais`);
-        const pets = (await resP.json()).filter(p => p.dono.id === c.id);
-        const s = document.getElementById('selectPet'); s.innerHTML = "";
-        pets.forEach(p => s.innerHTML += `<option value="${p.id}">${p.nome.toUpperCase()} (${p.raca})</option>`);
-        document.getElementById('fichaCliente').style.display = 'block';
-        document.getElementById('areaServico').style.display = 'block';
-        notify(`✅ ${c.nome} encontrado!`, 'success');
+        if(!tel) return notify("Digite o WhatsApp", "info");
+        setLoading('btnBuscarFicha', true, 'Aguarde...');
+        try {
+            const res = await fetch(`${API}/clientes/buscar-por-telefone/${tel}`);
+            if(!res.ok) throw new Error();
+            const c = await res.json();
+            document.getElementById('resDono').innerText = c.nome;
+            const pets = (await (await fetch(`${API}/animais`)).json()).filter(p => p.dono.id === c.id);
+            const s = document.getElementById('selectPet'); s.innerHTML = "";
+            pets.forEach(p => s.innerHTML += `<option value="${p.id}">${p.nome.toUpperCase()} (${p.raca})</option>`);
+            document.getElementById('fichaCliente').style.display = 'block';
+            document.getElementById('areaServico').style.display = 'block';
+            // reset toggle
+            setTipo('avulso');
+            notify(`✅ ${c.nome} encontrado!`);
+        } catch(e) { notify("❌ Cliente não encontrado", "error"); }
+        finally { setLoading('btnBuscarFicha', false, 'Buscar 🔍'); }
     }
 
     async function confirmarAgenda() {
-        setLoading('btnConfirmarAgenda', true, 'Confirmar Horário 🎋');
-        const dto = {
-            petId: document.getElementById('selectPet').value,
-            servico: document.getElementById('ageServico').value,
-            valor: document.getElementById('ageValor').value,
-            dataHora: document.getElementById('ageData').value,
-            formaPagamento: document.getElementById('agePagamento').value,
-            buscarEntregar: document.getElementById('ageTaxa').checked,
-            descricao: document.getElementById('ageDescricao').value
-        };
-        const res = await fetch(`${API}/agendamentos`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dto) });
-        setLoading('btnConfirmarAgenda', false, 'Confirmar Horário 🎋');
-        if (!res.ok) return notify("❌ Erro ao agendar", 'error');
-        notify("✅ Agendamento confirmado!", 'success');
-        showPage('lista', document.querySelectorAll('.nav-item')[2]);
+        const data = document.getElementById('ageData').value;
+        if(!data) return notify("Escolha a Data/Hora", "info");
+        setLoading('btnConfirmarAgenda', true, 'Aguarde...');
+        try {
+            const dto = {
+                petId: document.getElementById('selectPet').value,
+                servico: document.getElementById('ageServico').value,
+                valor: tipoAgendamento === 'mensal' ? 0.01 : (document.getElementById('ageValor').value || 0),
+                dataHora: data,
+                formaPagamento: document.getElementById('agePagamento').value,
+                buscarEntregar: document.getElementById('ageTaxa').checked,
+                descricao: document.getElementById('ageDescricao').value
+            };
+            const res = await fetch(`${API}/agendamentos`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dto) });
+            if(!res.ok) throw new Error();
+            notify("✅ Agendamento confirmado!");
+            showPage('lista', document.querySelectorAll('.nav-item')[2]);
+        } catch(e) { notify("Erro ao agendar", "error"); }
+        finally { setLoading('btnConfirmarAgenda', false, 'Confirmar Horário 🎋'); }
     }
+
+    // Define data de hoje no filtro ao carregar
+    window.addEventListener('load', () => {
+        const hoje = new Date().toISOString().split('T')[0];
+        document.getElementById('filtroData').value = hoje;
+    });
 </script>
 </body>
 </html>
