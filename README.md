@@ -13,6 +13,8 @@ Sistema completo de gerenciamento para pet shop, desenvolvido com Java/Spring Bo
 
 <img width="1258" height="903" alt="Screenshot 2026-10-24 at 18 17 55" src="https://github.com/user-attachments/assets/0f7d59b9-5098-41ad-b3a9-3f5dfcb80538" />
 
+<img width="1183" height="827" alt="Screenshot 2026-10-24 at 18 19 29" src="https://github.com/user-attachments/assets/61180602-2334-4a48-8851-d9b136791ddd" />
+
 ---
 
 ## 📋 Funcionalidades
