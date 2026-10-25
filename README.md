@@ -2,6 +2,17 @@
 
 Sistema completo de gerenciamento para pet shop, desenvolvido com Java/Spring Boot no backend, frontend em HTML/CSS/JS puro e banco de dados PostgreSQL. **Projeto em uso real** por um pet shop em São Paulo.
 
+
+<img width="1274" height="907" alt="Screenshot 2026-10-24 at 18 16 11" src="https://github.com/user-attachments/assets/075528e0-264b-4a11-952b-32e447c7564c" />
+
+<img width="1269" height="903" alt="Screenshot 2026-10-24 at 18 16 37" src="https://github.com/user-attachments/assets/3018b957-f3f1-4e9f-81d3-633371ed69f4" />
+
+<img width="1259" height="905" alt="Screenshot 2026-10-24 at 18 17 11" src="https://github.com/user-attachments/assets/41cab8ae-34a2-4057-9186-29b177a2a8ab" />
+
+<img width="1261" height="899" alt="Screenshot 2026-10-24 at 18 18 50" src="https://github.com/user-attachments/assets/fb1830f3-b0d4-477d-b75f-f604b8e14354" />
+
+<img width="1258" height="903" alt="Screenshot 2026-10-24 at 18 17 55" src="https://github.com/user-attachments/assets/0f7d59b9-5098-41ad-b3a9-3f5dfcb80538" />
+
 ---
 
 ## 📋 Funcionalidades
